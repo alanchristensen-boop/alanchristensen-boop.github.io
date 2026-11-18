@@ -1319,6 +1319,15 @@
             const cardRot = (Math.round(player.yaw / (Math.PI / 2)) + player.buildRotationOffset) * (Math.PI / 2);
             return { gx, gy, gz, cardRot };
         }
+
+        function getWallEdgeOffset(rotY) {
+            const half = BUILD_GRID_SIZE * 0.5;
+            return {
+                ox: -Math.sin(rotY) * half,
+                oz: -Math.cos(rotY) * half
+            };
+        }
+
         function isBuildPlacementSupported(gx, gy, gz, pieceType = player.buildPiece, rotY = 0) {
             if (gy <= 0.25) return true;
             const edge = pieceType === "wall" ? getWallEdgeOffset(rotY) : { ox: 0, oz: 0 };
