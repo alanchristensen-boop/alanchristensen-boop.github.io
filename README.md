@@ -50,366 +50,398 @@
     <!-- Pre-Game Survival Lobby Overlay -->
     <div id="main-lobby-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-stone-950/95 via-emerald-950/90 to-stone-950/95 backdrop-blur-md p-4">
         <div class="glass-panel max-w-2xl w-full p-6 sm:p-8 rounded-3xl shadow-2xl border border-lime-400/35 max-h-[94vh] overflow-y-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-700/80 pb-5">
-                <div>
-                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-red-500/20 border border-red-400/40 text-red-300 text-[10px] font-black uppercase tracking-widest mb-1.5">
-                        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                        <span id="lobby-top-badge">OUTBREAK ZONE • 19 INFECTED</span>
+            <!-- Fortnite-Style Top Navigation Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-stone-700/80 pb-4">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tighter text-white">DEAD <span class="text-lime-400">SHOT</span></h1>
+                    <div class="flex items-center gap-1.5 bg-stone-950/90 p-1 rounded-2xl border border-stone-700/80">
+                        <button type="button" onclick="switchLobbyTab('gameplay')" id="tab-btn-gameplay"
+                                class="px-4 py-1.5 rounded-xl bg-lime-400 text-stone-950 font-black text-xs uppercase tracking-wider shadow transition">
+                            Gameplay
+                        </button>
+                        <button type="button" onclick="switchLobbyTab('locker')" id="tab-btn-locker"
+                                class="px-4 py-1.5 rounded-xl text-stone-300 hover:text-white font-extrabold text-xs uppercase tracking-wider transition">
+                            Locker
+                        </button>
                     </div>
-                    <h1 class="text-4xl sm:text-5xl font-black tracking-tighter text-white">DEAD <span class="text-lime-400">SHOT</span></h1>
-                    <p id="lobby-subtitle" class="text-xs text-stone-400 mt-1">Zombie Survival • 100 HP • 25 Headshot / 15 Body</p>
                 </div>
-                <div class="bg-stone-900/90 px-4 py-2.5 rounded-2xl border border-stone-700/80 text-right">
-                    <div class="text-[10px] uppercase tracking-wider text-stone-400 font-bold">Lobby Status</div>
-                    <div class="text-sm font-black text-lime-400 mono">READY TO DEPLOY</div>
+                <div class="bg-stone-900/90 px-3.5 py-1.5 rounded-2xl border border-stone-700/80 text-right">
+                    <div class="text-[9px] uppercase tracking-wider text-stone-400 font-bold">Lobby Status</div>
+                    <div class="text-xs font-black text-lime-400 mono">READY TO DEPLOY</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-                <!-- Survivor Setup -->
-                <div class="bg-stone-900/80 p-4 rounded-2xl border border-stone-700/70 space-y-3.5">
+            <!-- TAB 1: GAMEPLAY (MODE, MAP, MULTIPLAYER & DEPLOY) -->
+            <div id="lobby-tab-gameplay">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-4">
                     <div>
-                        <label class="block text-[11px] font-extrabold uppercase tracking-wider text-lime-300 mb-1">Survivor Callsign</label>
-                        <input id="lobby-player-name" type="text" maxlength="18" value="Survivor-01"
-                               class="w-full px-3.5 py-2 rounded-xl bg-stone-950 border border-stone-700 focus:border-lime-400 focus:outline-none text-sm font-bold text-white" />
+                        <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-red-500/20 border border-red-400/40 text-red-300 text-[10px] font-black uppercase tracking-widest">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                            <span id="lobby-top-badge">OUTBREAK ZONE • 19 INFECTED</span>
+                        </div>
+                        <p id="lobby-subtitle" class="text-xs text-stone-400 mt-1">Zombie Survival • 100 HP • 25 Headshot / 15 Body</p>
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-extrabold uppercase tracking-wider text-purple-300 mb-1">Game Mode</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button type="button" onclick="setLobbyGameMode('zombies')" id="mode-zombies"
-                                    class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
-                                Zombie Survival
-                            </button>
-                            <button type="button" onclick="setLobbyGameMode('classic')" id="mode-classic"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                Classic Bots BR
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-extrabold uppercase tracking-wider text-cyan-300 mb-1">Building Mode</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button type="button" onclick="setLobbyBuildMode(true)" id="build-opt-on"
-                                    class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
-                                Build Mode
-                            </button>
-                            <button type="button" onclick="setLobbyBuildMode(false)" id="build-opt-off"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                Zero Build
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-extrabold uppercase tracking-wider text-sky-300 mb-1">Deployment Map</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="setLobbyMap('woodland')" id="map-woodland"
-                                    class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
-                                Woodland
-                            </button>
-                            <button type="button" onclick="setLobbyMap('city')" id="map-city"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                City
-                            </button>
-                            <button type="button" onclick="setLobbyMap('desert')" id="map-desert"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                Desert
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-extrabold uppercase tracking-wider text-amber-300 mb-1">Threat Level</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" onclick="setLobbyDifficulty('normal')" id="diff-normal"
-                                    class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
-                                Normal
-                            </button>
-                            <button type="button" onclick="setLobbyDifficulty('hard')" id="diff-hard"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                Frenzied
-                            </button>
-                            <button type="button" onclick="setLobbyDifficulty('nightmare')" id="diff-nightmare"
-                                    class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
-                                Nightmare
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Lobby Staging Roster -->
-                <div class="bg-stone-900/80 p-4 rounded-2xl border border-stone-700/70 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-stone-300">Sector Staging</span>
-                            <span id="lobby-enemy-count" class="mono text-[11px] font-bold text-red-400">19 ZOMBIES DETECTED</span>
-                        </div>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-lime-500/15 border border-lime-400/30">
-                                <span id="lobby-preview-name" class="font-extrabold text-lime-300">Survivor-01 (You)</span>
-                                <span class="mono text-[10px] font-black px-2 py-0.5 rounded bg-lime-400 text-stone-950">READY</span>
-                            </div>
-                            <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-stone-950/70 border border-stone-800">
-                                <span id="lobby-enemy-label" class="font-bold text-red-300">Infected Horde (x19)</span>
-                                <span class="mono text-[10px] font-bold text-red-400">100 HP EACH</span>
-                            </div>
-                            <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-stone-950/70 border border-stone-800">
-                                <span id="lobby-map-label" class="font-bold text-amber-300">Woodland Supply Chests</span>
-                                <span class="mono text-[10px] font-bold text-amber-400">23 ACTIVE</span>
-                            </div>
-                        </div>
-                        <div class="mt-3 pt-3 border-t border-stone-800 text-[11px] text-stone-400 space-y-1">
-                            <div>• Spawn with <span class="text-white font-bold">M9 Pistol</span> & <span class="text-white font-bold">Combat Knife</span></div>
-                            <div>• Loot <span class="text-amber-300 font-bold">Supply Chests [E]</span> for M4A1, Shotgun & Medkits</div>
-                            <div>• Press <span class="text-sky-300 font-bold">[Q]</span> in Build Mode for Walls, Floors & Ramps</div>
-                        </div>
-                    </div>
-
-                    <button onclick="deployFromLobby()"
-                            class="mt-5 w-full py-3.5 rounded-2xl bg-gradient-to-r from-lime-500 to-emerald-500 hover:from-lime-400 hover:to-emerald-400 text-stone-950 font-black text-sm uppercase tracking-wider shadow-lg transition">
-                        Deploy Into Dead Shot
+                    <button type="button" onclick="switchLobbyTab('locker')" class="self-start sm:self-center px-3 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-[11px] font-bold text-amber-300 transition">
+                        Outfit: <span id="gameplay-skin-summary">RANGER OLIVE</span> →
                     </button>
                 </div>
+
+                <!-- Live Online Multiplayer Room Bar -->
+                <div class="mt-4 bg-stone-900/90 p-3.5 rounded-2xl border border-sky-400/35">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span id="mp-status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-sky-300">Live Online Multiplayer</span>
+                                <span id="mp-conn-mode" class="mono text-[9px] font-black px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30">CHECKING...</span>
+                                <span id="mp-room-badge" class="mono text-[10px] font-black px-2 py-0.5 rounded bg-stone-800 text-stone-300">SOLO / OFFLINE</span>
+                            </div>
+                            <div class="text-[10px] text-stone-400 mt-1 mono break-all">
+                                Your ID: <span id="mp-user-id" class="text-stone-200 select-all">Connecting...</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <button type="button" onclick="createMultiplayerRoom()"
+                                    class="px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-stone-950 font-black text-[11px] uppercase transition">
+                                Host Room
+                            </button>
+                            <input id="mp-room-input" type="text" maxlength="6" placeholder="CODE"
+                                   class="w-20 px-2.5 py-1.5 rounded-xl bg-stone-950 border border-stone-700 focus:border-sky-400 focus:outline-none text-xs font-black uppercase text-center text-white mono" />
+                            <button type="button" onclick="joinMultiplayerRoom()"
+                                    class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-stone-950 font-black text-[11px] uppercase transition">
+                                Join
+                            </button>
+                            <button type="button" id="mp-leave-btn" onclick="leaveMultiplayerRoom()"
+                                    class="hidden px-2.5 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/40 text-red-300 font-bold text-[11px] uppercase transition">
+                                Leave
+                            </button>
+                        </div>
+                    </div>
+                    <div id="mp-feedback-msg" class="hidden mt-2 text-[11px] font-bold text-amber-300"></div>
+                    <div id="mp-party-header" class="mt-2.5 pt-2 border-t border-stone-800 hidden items-center justify-between">
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-300">Active Party Squad</span>
+                        <span id="mp-party-count" class="mono text-[10px] font-bold text-lime-400">1 PLAYER IN PARTY</span>
+                    </div>
+                    <div id="mp-players-list" class="mt-1.5 hidden flex-wrap items-center gap-1.5 text-[11px]"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
+                    <div class="bg-stone-900/75 p-4 rounded-2xl border border-stone-700/70 flex flex-col justify-between">
+                        <div>
+                            <label class="block text-[11px] font-extrabold uppercase tracking-wider text-purple-300 mb-1">Game Mode</label>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button type="button" onclick="setLobbyGameMode('zombies')" id="mode-zombies"
+                                        class="py-2 px-1 rounded-xl bg-lime-500 text-stone-950 font-black text-[11px] uppercase transition">
+                                    Zombies
+                                </button>
+                                <button type="button" onclick="setLobbyGameMode('classic')" id="mode-classic"
+                                        class="py-2 px-1 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-[11px] uppercase transition">
+                                    Classic BR
+                                </button>
+                                <button type="button" onclick="setLobbyGameMode('pvp')" id="mode-pvp"
+                                        class="py-2 px-1 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-[11px] uppercase transition">
+                                    PvP Arena
+                                </button>
+                            </div>
+
+                            <label class="block text-[11px] font-extrabold uppercase tracking-wider text-sky-300 mt-3 mb-1">Building Mode</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="setLobbyBuildMode(true)" id="build-opt-on"
+                                        class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
+                                    Build Mode
+                                </button>
+                                <button type="button" onclick="setLobbyBuildMode(false)" id="build-opt-off"
+                                        class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
+                                    Zero Build
+                                </button>
+                            </div>
+
+                            <label class="block text-[11px] font-extrabold uppercase tracking-wider text-amber-300 mt-3 mb-1">Select Map</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" onclick="setLobbyMap('woodland')" id="map-woodland"
+                                        class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
+                                    Woodland
+                                </button>
+                                <button type="button" onclick="setLobbyMap('city')" id="map-city"
+                                        class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
+                                    City
+                                </button>
+                                <button type="button" onclick="setLobbyMap('desert')" id="map-desert"
+                                        class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
+                                    Desert
+                                </button>
+                            </div>
+
+                            <label class="block text-[11px] font-extrabold uppercase tracking-wider text-stone-300 mt-3 mb-1">Difficulty</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" onclick="setLobbyDifficulty('normal')" id="diff-normal"
+                                        class="py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition">
+                                    Normal
+                                </button>
+                                <button type="button" onclick="setLobbyDifficulty('hard')" id="diff-hard"
+                                        class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
+                                    Hard
+                                </button>
+                                <button type="button" onclick="setLobbyDifficulty('nightmare')" id="diff-nightmare"
+                                        class="py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition">
+                                    Nightmare
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-900/75 p-4 rounded-2xl border border-stone-700/70 flex flex-col justify-between">
+                        <div>
+                            <div class="text-[11px] font-extrabold uppercase tracking-wider text-lime-300 mb-2">Match Briefing</div>
+                            <div class="text-xs space-y-2 text-stone-300">
+                                <div class="flex justify-between">
+                                    <span id="lobby-enemy-label" class="text-stone-400">Infected Horde (x19)</span>
+                                    <span id="lobby-enemy-count" class="font-bold text-red-400 mono">19 ZOMBIES DETECTED</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-stone-400">Sector Loot</span>
+                                    <span id="lobby-map-label" class="font-bold text-amber-300">Woodland Supply Chests</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-stone-400">Active Survivor</span>
+                                    <span id="lobby-preview-name" class="font-bold text-lime-300">Survivor-01 (You)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-stone-400">Loadout Finish</span>
+                                    <span id="lobby-briefing-skin" class="font-bold text-sky-300">Ranger Olive</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="deployFromLobby()"
+                                class="mt-5 w-full py-3.5 rounded-2xl bg-gradient-to-r from-lime-400 to-emerald-500 hover:from-lime-300 hover:to-emerald-400 text-stone-950 font-black text-sm uppercase tracking-wider shadow-lg transition transform active:scale-98">
+                            Play / Deploy Into Match
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: LOCKER (CHARACTER SKINS, WEAPON WRAPS & CALLSIGN) -->
+            <div id="lobby-tab-locker" class="hidden mt-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-stone-900/75 p-5 rounded-2xl border border-stone-700/70">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-black uppercase tracking-wider text-amber-300">Character & Weapon Wraps</span>
+                            <span id="lobby-skin-badge" class="px-2.5 py-0.5 rounded text-[10px] font-black text-stone-950 bg-lime-400">RANGER OLIVE</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button type="button" onclick="setLobbySkin('ranger')" id="skin-ranger"
+                                    class="p-3 rounded-2xl bg-lime-500 text-stone-950 font-black text-xs uppercase text-left transition flex flex-col gap-1">
+                                <span class="w-5 h-5 rounded-full bg-emerald-800 border-2 border-stone-950 inline-block"></span>
+                                <span>Ranger Olive</span>
+                                <span class="text-[10px] opacity-80 font-bold">Standard Issue</span>
+                            </button>
+                            <button type="button" onclick="setLobbySkin('crimson')" id="skin-crimson"
+                                    class="p-3 rounded-2xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase text-left transition flex flex-col gap-1">
+                                <span class="w-5 h-5 rounded-full bg-red-600 border-2 border-stone-950 inline-block"></span>
+                                <span>Crimson Ops</span>
+                                <span class="text-[10px] opacity-75 font-semibold">Spec-Ops Red</span>
+                            </button>
+                            <button type="button" onclick="setLobbySkin('arctic')" id="skin-arctic"
+                                    class="p-3 rounded-2xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase text-left transition flex flex-col gap-1">
+                                <span class="w-5 h-5 rounded-full bg-sky-300 border-2 border-stone-950 inline-block"></span>
+                                <span>Arctic Ghost</span>
+                                <span class="text-[10px] opacity-75 font-semibold">Frost White</span>
+                            </button>
+                            <button type="button" onclick="setLobbySkin('gold')" id="skin-gold"
+                                    class="p-3 rounded-2xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase text-left transition flex flex-col gap-1">
+                                <span class="w-5 h-5 rounded-full bg-amber-400 border-2 border-stone-950 inline-block"></span>
+                                <span>Gold Champion</span>
+                                <span class="text-[10px] opacity-75 font-semibold">Legendary Gold</span>
+                            </button>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-xs font-black uppercase tracking-wider text-lime-300 mb-1.5">Survivor Callsign</label>
+                            <input id="lobby-player-name" type="text" value="Survivor-01" maxlength="16"
+                                   oninput="syncLobbyCallsignPreview()"
+                                   class="w-full px-3.5 py-2 rounded-xl bg-stone-950 border border-stone-700 focus:border-lime-400 focus:outline-none text-sm font-bold text-white" />
+                        </div>
+                    </div>
+
+                    <div class="bg-stone-900/75 p-5 rounded-2xl border border-stone-700/70 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-black uppercase tracking-wider text-sky-300">Live 3D Outfit Preview</span>
+                                <span class="text-[10px] font-bold text-stone-400">Drag to rotate</span>
+                            </div>
+                            <div class="relative w-full h-52 rounded-2xl bg-gradient-to-b from-stone-950 via-emerald-950/50 to-stone-950 border border-stone-700/80 overflow-hidden">
+                                <canvas id="locker-preview-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+                                <div class="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-bold pointer-events-none">
+                                    <span id="locker-detail-outfit" class="px-2 py-0.5 rounded bg-stone-950/85 text-lime-300 border border-stone-700/70">Ranger Olive Tactical</span>
+                                    <span id="locker-detail-tag" class="px-2 py-0.5 rounded bg-stone-950/85 text-sky-300 border border-stone-700/70">Survivor-01</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="switchLobbyTab('gameplay')"
+                                class="mt-4 w-full py-3 rounded-2xl bg-lime-400 hover:bg-lime-300 text-stone-950 font-black text-xs uppercase tracking-wider shadow-lg transition">
+                            Equip & Return To Gameplay Tab
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 3D WebGL Viewport -->
+    <!-- Fullscreen 3D Canvas -->
     <div id="game-canvas-container"></div>
 
-    <!-- Damage Vignette Flash -->
-    <div id="damage-flash" class="pointer-events-none fixed inset-0 z-10 opacity-0 transition-opacity duration-150"
-         style="background: radial-gradient(circle, rgba(220,38,38,0) 45%, rgba(220,38,38,0.65) 100%);"></div>
+    <!-- Damage Flash & Hitmarker -->
+    <div id="damage-flash" class="fixed inset-0 pointer-events-none z-10 opacity-0 transition-opacity duration-150"
+         style="background: radial-gradient(circle, transparent 55%, rgba(220, 38, 38, 0.55) 100%);"></div>
 
-    <!-- Center Crosshair & Hitmarker -->
-    <div id="crosshair-container" class="pointer-events-none fixed inset-0 z-20 flex items-center justify-center">
-        <div class="relative w-8 h-8 flex items-center justify-center">
-            <div class="absolute top-0 w-0.5 h-2 bg-lime-400 shadow"></div>
-            <div class="absolute bottom-0 w-0.5 h-2 bg-lime-400 shadow"></div>
-            <div class="absolute left-0 h-0.5 w-2 bg-lime-400 shadow"></div>
-            <div class="absolute right-0 h-0.5 w-2 bg-lime-400 shadow"></div>
-            <div class="w-1 h-1 rounded-full bg-white"></div>
+    <div id="crosshair-wrap" class="fixed inset-0 pointer-events-none z-20 flex items-center justify-center">
+        <div class="relative w-6 h-6 flex items-center justify-center">
+            <div class="w-1 h-1 rounded-full bg-lime-300 shadow"></div>
+            <div class="absolute top-0 w-0.5 h-1.5 bg-lime-300/80"></div>
+            <div class="absolute bottom-0 w-0.5 h-1.5 bg-lime-300/80"></div>
+            <div class="absolute left-0 h-0.5 w-1.5 bg-lime-300/80"></div>
+            <div class="absolute right-0 h-0.5 w-1.5 bg-lime-300/80"></div>
             <div id="hitmarker" class="absolute inset-0 opacity-0 transition-opacity duration-75 flex items-center justify-center">
-                <div class="w-5 h-0.5 bg-red-500 rotate-45 absolute"></div>
-                <div class="w-5 h-0.5 bg-red-500 -rotate-45 absolute"></div>
+                <div class="w-4 h-0.5 bg-red-500 rotate-45 absolute"></div>
+                <div class="w-4 h-0.5 bg-red-500 -rotate-45 absolute"></div>
             </div>
         </div>
     </div>
 
-    <!-- Chest Loot Prompt -->
-    <div id="loot-prompt" class="pointer-events-none fixed bottom-36 left-1/2 -translate-x-1/2 z-20 hidden">
-        <div class="glass-panel px-4 py-2 rounded-xl flex items-center gap-2.5 shadow-xl border border-amber-400/50">
-            <span class="px-2 py-0.5 rounded bg-amber-400 text-stone-950 font-black text-xs mono">E</span>
-            <span id="loot-prompt-text" class="text-xs font-bold tracking-wide text-amber-200">OPEN SUPPLY CHEST</span>
-        </div>
-    </div>
-
-    <!-- Medkit 3.0s Progress Bar -->
-    <div id="medkit-progress-wrap" class="pointer-events-none fixed bottom-44 left-1/2 -translate-x-1/2 z-20 hidden w-64">
-        <div class="glass-panel p-3 rounded-xl border border-red-400/50 shadow-xl">
-            <div class="flex justify-between items-center text-xs font-extrabold text-red-300 mb-1.5">
-                <span>APPLYING MEDKIT...</span>
-                <span id="medkit-timer-text" class="mono">3.0s</span>
-            </div>
-            <div class="w-full h-2.5 bg-stone-800 rounded-full overflow-hidden">
-                <div id="medkit-progress-bar" class="h-full bg-gradient-to-r from-red-500 to-emerald-400 w-0 transition-all duration-75"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Top-Left Match Status, Aim Mode & Simulation Controls -->
-    <div class="fixed top-3 left-3 z-20 flex flex-col gap-2 max-w-xs sm:max-w-sm">
-        <div class="glass-panel p-3 rounded-2xl shadow-lg">
+    <!-- Top-Left Status & Live Spectator / Speed Controls -->
+    <div class="fixed top-4 left-4 z-20 flex flex-col gap-2 max-w-xs sm:max-w-sm">
+        <div class="glass-panel px-3.5 py-2.5 rounded-2xl shadow-lg">
             <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-lime-400 animate-pulse"></span>
-                    <span id="hud-mode-badge" class="text-xs font-extrabold uppercase tracking-wider text-lime-300">DEAD SHOT (19 Zombies)</span>
-                </div>
-                <span id="hud-submode-badge" class="mono text-[11px] text-red-400 font-bold">ZOMBIE SURVIVAL</span>
+                <span id="hud-mode-badge" class="text-xs font-extrabold tracking-wide text-lime-300">DEAD SHOT (19 Zombies)</span>
+                <span id="hud-submode-badge" class="px-2 py-0.5 rounded-full bg-lime-500/20 text-lime-300 text-[10px] font-bold uppercase">ZOMBIE SURVIVAL</span>
             </div>
-            <div class="mt-1.5 flex items-center justify-between text-[11px]">
-                <span id="hud-aim-status" class="text-amber-300 font-semibold">Click screen to lock cursor (or move mouse / drag)</span>
+            <div class="mt-1 text-[11px] text-stone-300">
+                <span id="hud-aim-status" class="text-amber-300 font-semibold">Click screen to activate aim (or drag mouse)</span>
             </div>
+            <div id="hud-party-live" class="hidden mt-1.5 pt-1.5 border-t border-stone-700/70 text-[10px] font-bold text-sky-300"></div>
             <div class="mt-2 pt-2 border-t border-stone-700/70 flex flex-wrap items-center justify-between gap-1.5">
                 <button id="btn-sim-toggle" onclick="toggleSimMode()"
-                        class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 border border-stone-600 text-[11px] font-bold text-emerald-300 transition">
+                        class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-emerald-300 font-bold text-[10px] transition">
                     [M] Mode: Manual Play
                 </button>
                 <div class="flex items-center gap-1">
-                    <button onclick="setSimSpeed(1)" id="spd-1" class="px-2 py-0.5 rounded bg-lime-600 text-stone-950 font-bold text-[10px]">1x</button>
-                    <button onclick="setSimSpeed(2)" id="spd-2" class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-bold text-[10px]">2x</button>
-                    <button onclick="setSimSpeed(4)" id="spd-4" class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-bold text-[10px]">4x</button>
-                    <button onclick="openPauseMenu()" class="ml-1 px-2 py-0.5 rounded bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-[10px]">[P] Menu</button>
+                    <button id="spd-1" onclick="setSimSpeed(1)" class="px-2 py-0.5 rounded bg-lime-600 text-stone-950 font-bold text-[10px]">1x</button>
+                    <button id="spd-2" onclick="setSimSpeed(2)" class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-bold text-[10px]">2x</button>
+                    <button id="spd-4" onclick="setSimSpeed(4)" class="px-2 py-0.5 rounded bg-stone-800 text-stone-300 font-bold text-[10px]">4x</button>
                 </div>
             </div>
         </div>
 
-        <!-- Live Kill Feed -->
         <div id="kill-feed" class="flex flex-col gap-1 pointer-events-none"></div>
     </div>
 
-    <!-- Top-Right Tactical Radar Minimap -->
-    <div class="fixed top-3 right-3 z-20 flex flex-col items-end gap-2">
-        <div class="glass-panel p-2 rounded-2xl shadow-lg">
-            <canvas id="minimap-canvas" width="148" height="148" class="rounded-xl bg-stone-950/90 border border-stone-700/80"></canvas>
+    <!-- Top-Right Minimap -->
+    <div class="fixed top-4 right-4 z-20 flex flex-col items-end gap-2">
+        <div class="glass-panel p-2.5 rounded-2xl shadow-lg">
+            <canvas id="minimap-canvas" width="144" height="144" class="rounded-xl bg-stone-950/90 border border-stone-700/80"></canvas>
             <div class="mt-1.5 flex items-center justify-between text-[10px] font-semibold text-stone-300 px-1">
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-lime-400 inline-block"></span>You</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-400 inline-block"></span>Squad/PvP</span>
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span>Enemies</span>
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>Loot</span>
             </div>
         </div>
+        <button onclick="openPauseMenu()" class="glass-panel px-3 py-1.5 rounded-xl text-xs font-bold text-stone-200 hover:border-lime-400 transition">
+            [P] Tactical Menu
+        </button>
     </div>
 
-    <!-- Bottom-Left Health & Eliminations HUD -->
-    <div class="fixed bottom-4 left-4 z-20 pointer-events-none">
-        <div class="glass-panel p-3.5 rounded-2xl w-64 sm:w-72 shadow-xl">
-            <div class="flex justify-between items-baseline mb-1.5">
-                <div class="flex items-baseline gap-1.5">
-                    <span id="hud-health-val" class="text-3xl font-black text-lime-400 mono">100</span>
-                    <span class="text-xs font-bold text-stone-400">/ 100 HP</span>
-                </div>
-                <div class="text-right">
-                    <span class="text-[10px] uppercase tracking-wider text-stone-400 block">Eliminations</span>
-                    <span id="hud-kills-val" class="text-base font-black text-amber-400 mono">0</span>
-                </div>
-            </div>
-            <div class="w-full h-3 bg-stone-900 rounded-full overflow-hidden border border-stone-700/70">
-                <div id="hud-health-bar" class="h-full bg-gradient-to-r from-emerald-500 to-lime-400 transition-all duration-150" style="width: 100%;"></div>
-            </div>
-            <div class="mt-2 flex justify-between text-[10px] text-stone-400 font-medium">
-                <span>WASD Move • Space Jump</span>
-                <span id="hud-controls-hint">[Q] Build • [H] Medkit</span>
-            </div>
+    <!-- Center Prompts (Loot & Medkit Progress) -->
+    <div id="loot-prompt" class="hidden fixed bottom-36 left-1/2 -translate-x-1/2 z-20 glass-panel px-4 py-2 rounded-full text-xs font-extrabold text-amber-300 shadow-lg">
+        Press <span class="px-1.5 py-0.5 bg-amber-400 text-stone-950 rounded mx-1">E</span> to Open Supply Chest
+    </div>
+
+    <div id="medkit-progress-wrap" class="hidden fixed bottom-44 left-1/2 -translate-x-1/2 z-20 glass-panel px-5 py-3 rounded-2xl w-64 text-center shadow-xl">
+        <div class="flex justify-between text-xs font-bold text-emerald-300 mb-1.5">
+            <span>Applying Med Kit...</span>
+            <span id="medkit-timer-text" class="mono">3.0s</span>
+        </div>
+        <div class="w-full h-2.5 bg-stone-800 rounded-full overflow-hidden">
+            <div id="medkit-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 to-lime-400 w-0 transition-all duration-75"></div>
         </div>
     </div>
 
-    <!-- Bottom-Right Weapon Loadout, Build Blueprints & Ammo HUD -->
-    <div class="fixed bottom-4 right-4 z-20 flex flex-col items-end gap-2 pointer-events-none">
-        <div class="flex items-center gap-2">
-            <!-- Wood Materials Counter -->
-            <div id="hud-wood-panel" class="glass-panel px-3 py-2.5 rounded-2xl text-right shadow-xl border border-amber-500/40">
-                <div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300">WOOD MATS</div>
-                <div class="flex items-baseline justify-end gap-1 mt-0.5">
-                    <span id="hud-wood-count" class="text-2xl font-black text-amber-400 mono">150</span>
-                    <span class="text-[10px] font-bold text-stone-400 mono">/ 999</span>
+    <!-- Bottom HUD: Health, Kills, Wood & Weapons / Build Hotbar -->
+    <div class="fixed bottom-4 left-4 right-4 z-20 flex flex-col sm:flex-row items-center justify-between gap-3 pointer-events-none">
+        <div class="flex items-center gap-2 pointer-events-auto">
+            <div class="glass-panel px-4 py-2.5 rounded-2xl min-w-[180px]">
+                <div class="flex items-baseline justify-between">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-stone-400">Health</span>
+                    <span class="mono text-lg font-black text-lime-400"><span id="hud-health-val">100</span> <span class="text-xs text-stone-400">/ 100</span></span>
+                </div>
+                <div class="w-full h-2.5 bg-stone-800 rounded-full overflow-hidden mt-1">
+                    <div id="hud-health-bar" class="h-full bg-gradient-to-r from-lime-400 to-emerald-400 w-full transition-all duration-150"></div>
                 </div>
             </div>
-            <!-- Active Weapon / Blueprint Readout -->
-            <div class="glass-panel px-4 py-2.5 rounded-2xl text-right shadow-xl">
-                <div id="hud-weapon-name" class="text-xs font-extrabold uppercase tracking-wider text-lime-300">M9 TACTICAL PISTOL</div>
-                <div class="flex items-baseline justify-end gap-1.5 mt-0.5">
-                    <span id="hud-ammo-mag" class="text-3xl font-black text-white mono">15</span>
-                    <span id="hud-ammo-res" class="text-sm font-bold text-stone-400 mono">/ 90</span>
-                </div>
+
+            <div class="glass-panel px-3.5 py-2.5 rounded-2xl text-center">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-stone-400">Elims</div>
+                <div id="hud-kills-val" class="mono text-lg font-black text-red-400">0</div>
+            </div>
+
+            <div id="hud-wood-panel" class="glass-panel px-3.5 py-2.5 rounded-2xl text-center">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300">Wood</div>
+                <div id="hud-wood-count" class="mono text-lg font-black text-amber-400">150</div>
             </div>
         </div>
 
-        <!-- Fortnite Build Piece Selector Bar (Shown in Build Mode [Q]) -->
-        <div id="build-bar" class="hidden items-center gap-1.5">
-            <div id="bpiece-wall" class="glass-panel px-3 py-1.5 rounded-xl border-2 border-sky-400 bg-sky-950/60 text-center min-w-[66px]">
-                <div class="text-[10px] font-bold text-sky-300 mono">[Z]</div>
-                <div class="text-[11px] font-extrabold text-white">WALL</div>
+        <div class="flex flex-col items-center gap-1.5 pointer-events-auto">
+            <div id="hud-build-bar" class="hidden items-center gap-1.5 glass-panel px-3 py-1.5 rounded-xl text-[11px] font-extrabold">
+                <span class="text-sky-300 mr-1">BUILD:</span>
+                <button id="bpiece-wall" onclick="selectBuildPiece('wall')" class="px-2 py-0.5 rounded bg-stone-800 text-white border-2 border-sky-400">[Z] Wall</button>
+                <button id="bpiece-floor" onclick="selectBuildPiece('floor')" class="px-2 py-0.5 rounded bg-stone-800 text-white border border-stone-700">[X] Floor</button>
+                <button id="bpiece-ramp" onclick="selectBuildPiece('ramp')" class="px-2 py-0.5 rounded bg-stone-800 text-white border border-stone-700">[C] Ramp</button>
             </div>
-            <div id="bpiece-floor" class="glass-panel px-3 py-1.5 rounded-xl border border-stone-700 bg-sky-950/40 text-center min-w-[66px]">
-                <div class="text-[10px] font-bold text-sky-300 mono">[X]</div>
-                <div class="text-[11px] font-extrabold text-stone-200">FLOOR</div>
-            </div>
-            <div id="bpiece-ramp" class="glass-panel px-3 py-1.5 rounded-xl border border-stone-700 bg-sky-950/40 text-center min-w-[66px]">
-                <div class="text-[10px] font-bold text-sky-300 mono">[C]</div>
-                <div class="text-[11px] font-extrabold text-stone-200">RAMP</div>
-            </div>
-            <div class="glass-panel px-3 py-1.5 rounded-xl border border-lime-400/50 bg-lime-950/50 text-center">
-                <div class="text-[10px] font-bold text-lime-300 mono">[Q]</div>
-                <div class="text-[11px] font-extrabold text-lime-200">COMBAT</div>
-            </div>
-        </div>
 
-        <!-- 5-Slot Inventory Bar -->
-        <div id="weapon-bar" class="flex items-center gap-1.5">
-            <div id="slot-0" class="glass-panel px-2.5 py-1.5 rounded-xl border border-stone-700 opacity-45 text-center min-w-[54px]">
-                <div class="text-[10px] font-bold text-stone-400 mono">[1]</div>
-                <div class="text-[11px] font-extrabold text-stone-200">M4A1</div>
+            <div id="hud-weapon-bar" class="glass-panel px-4 py-1.5 rounded-xl flex items-center gap-3 text-xs">
+                <span id="hud-weapon-name" class="font-black text-white">M9 TACTICAL PISTOL</span>
+                <span class="mono font-bold text-lime-400"><span id="hud-ammo-mag">15</span> <span id="hud-ammo-res" class="text-stone-400">/ 90</span></span>
+                <span id="hud-controls-hint" class="text-[10px] text-stone-400 hidden md:inline">[Q] Build • [H] Medkit</span>
             </div>
-            <div id="slot-1" class="glass-panel px-2.5 py-1.5 rounded-xl border border-stone-700 opacity-45 text-center min-w-[54px]">
-                <div class="text-[10px] font-bold text-stone-400 mono">[2]</div>
-                <div class="text-[11px] font-extrabold text-stone-200">M870</div>
-            </div>
-            <div id="slot-2" class="glass-panel px-2.5 py-1.5 rounded-xl border-2 border-lime-400 text-center min-w-[54px]">
-                <div class="text-[10px] font-bold text-lime-300 mono">[3]</div>
-                <div class="text-[11px] font-extrabold text-white">M9</div>
-            </div>
-            <div id="slot-3" class="glass-panel px-2.5 py-1.5 rounded-xl border border-stone-700 text-center min-w-[54px]">
-                <div class="text-[10px] font-bold text-stone-400 mono">[4]</div>
-                <div class="text-[11px] font-extrabold text-stone-200">KNIFE</div>
-            </div>
-            <div id="slot-4" class="glass-panel px-2.5 py-1.5 rounded-xl border border-stone-700 opacity-45 text-center min-w-[58px]">
-                <div class="text-[10px] font-bold text-red-400 mono">[5]</div>
-                <div id="slot-4-label" class="text-[11px] font-extrabold text-red-200">MED (0)</div>
+
+            <div class="flex items-center gap-1.5">
+                <button id="slot-0" onclick="switchWeaponSlot(0)" class="glass-panel px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-stone-700">1: M4A1</button>
+                <button id="slot-1" onclick="switchWeaponSlot(1)" class="glass-panel px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-stone-700">2: M870</button>
+                <button id="slot-2" onclick="switchWeaponSlot(2)" class="glass-panel px-2.5 py-1.5 rounded-xl text-[11px] font-bold border-2 border-lime-400">3: M9</button>
+                <button id="slot-3" onclick="switchWeaponSlot(3)" class="glass-panel px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-stone-700">4: KNIFE</button>
+                <button id="slot-4" onclick="startMedkitHeal()" class="glass-panel px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-stone-700 text-emerald-300">5: <span id="slot-4-label">MED (0)</span></button>
             </div>
         </div>
     </div>
 
-    <!-- Victory / Elimination Match End Banner -->
-    <div id="match-end-overlay" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/75 backdrop-blur-md p-4">
-        <div class="glass-panel max-w-md w-full p-7 rounded-3xl text-center shadow-2xl border border-lime-400/40">
-            <div id="end-banner-tag" class="inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest bg-lime-400/20 text-lime-300 mb-3">
-                VICTORY ROYALE
-            </div>
-            <h2 id="end-banner-title" class="text-3xl font-black text-white tracking-tight">SECTOR CLEARED!</h2>
-            <p id="end-banner-sub" class="text-sm text-stone-300 mt-2">You eliminated all enemies in Dead Shot.</p>
-            <div class="mt-5 grid grid-cols-2 gap-3 bg-stone-900/80 p-3.5 rounded-2xl border border-stone-700/70">
+    <!-- Tactical Pause Menu Overlay -->
+    <div id="pause-menu-overlay" class="hidden fixed inset-0 z-40 items-center justify-center bg-stone-950/80 backdrop-blur-sm p-4">
+        <div class="glass-panel max-w-lg w-full p-6 rounded-3xl shadow-2xl">
+            <div class="flex items-center justify-between border-b border-stone-700 pb-4">
                 <div>
-                    <div class="text-[11px] text-stone-400 uppercase font-bold">Eliminations</div>
-                    <div id="end-stat-kills" class="text-2xl font-black text-amber-400 mono mt-0.5">0</div>
+                    <h2 class="text-2xl font-black text-white">DEAD SHOT — PAUSED</h2>
+                    <p class="text-xs text-stone-400">WASD Move • Mouse Aim • Click Shoot • Q Build • H Medkit</p>
                 </div>
-                <div>
-                    <div class="text-[11px] text-stone-400 uppercase font-bold">Placement</div>
-                    <div id="end-stat-place" class="text-2xl font-black text-lime-400 mono mt-0.5">#1 / 20</div>
-                </div>
-            </div>
-            <div class="mt-6 flex flex-col sm:flex-row gap-2.5">
-                <button onclick="resetSoloMatch()"
-                        class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-lime-500 to-emerald-500 hover:from-lime-400 hover:to-emerald-400 text-stone-950 font-black text-xs uppercase tracking-wider shadow-lg transition">
-                    Play Again
-                </button>
-                <button onclick="returnToMainLobby()"
-                        class="py-3.5 px-4 rounded-2xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-extrabold text-xs uppercase tracking-wider border border-stone-600 transition">
-                    Lobby
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pause & Roster Overlay ([P]) -->
-    <div id="pause-menu-overlay" class="fixed inset-0 z-30 hidden items-center justify-center bg-black/70 backdrop-blur-md p-4">
-        <div class="glass-panel max-w-2xl w-full p-6 rounded-3xl shadow-2xl border border-lime-400/30 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-stone-700/80 pb-4">
-                <div>
-                    <h1 class="text-2xl font-black tracking-tight text-white">DEAD <span class="text-lime-400">SHOT</span></h1>
-                    <p class="text-xs text-stone-400 mt-0.5">100 HP • 25 Headshot / 15 Body • Supply Chests & Building</p>
-                </div>
-                <button onclick="resumeGameplay()" class="px-4 py-2 rounded-xl bg-lime-500 hover:bg-lime-400 text-stone-950 font-black text-xs uppercase tracking-wider">
-                    Resume
-                </button>
+                <button onclick="resumeGameplay()" class="px-4 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-stone-950 font-black text-xs uppercase">Resume</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                 <div class="bg-stone-900/75 p-4 rounded-2xl border border-stone-700/70 flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xs font-extrabold uppercase tracking-wider text-lime-300 mb-2">Controls</h3>
-                        <ul class="space-y-1.5 text-xs text-stone-300">
-                            <li><span class="mono text-lime-300 font-bold">W A S D</span> — Move • <span class="mono text-lime-300 font-bold">Shift</span> — Sprint • <span class="mono text-lime-300 font-bold">Space</span> — Jump</li>
-                            <li><span class="mono text-lime-300 font-bold">Left Click / F</span> — Fire / Place Build • <span class="mono text-lime-300 font-bold">R</span> — Reload</li>
-                            <li><span class="mono text-sky-300 font-bold">Q</span> — Toggle Build Mode (<span class="mono">Z</span> Wall, <span class="mono">X</span> Floor, <span class="mono">C</span> Ramp)</li>
-                            <li><span class="mono text-amber-300 font-bold">E</span> — Open Supply Chests (Weapons, Medkits, Wood)</li>
-                            <li><span class="mono text-red-300 font-bold">5 / H</span> — Apply Medkit (3.0s -> 100 HP)</li>
-                            <li><span class="mono text-lime-300 font-bold">M</span> — Toggle Live Auto-Simulation</li>
-                        </ul>
+                    <div class="text-xs text-stone-300 space-y-1.5">
+                        <div class="font-bold text-lime-300">Combat Rules</div>
+                        <div>• Player & Enemy Health: 100 HP</div>
+                        <div>• Headshot: 25 DMG | Body: 15 DMG</div>
+                        <div>• Med Kit: 3.0s channel to 100 HP</div>
                     </div>
-                    <div class="mt-4 flex gap-2">
-                        <button onclick="resetSoloMatch()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider transition">
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button onclick="resetSoloMatch()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider transition">
                             Restart Match
                         </button>
-                        <button onclick="returnToMainLobby()" class="px-3.5 py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-extrabold text-xs uppercase tracking-wider border border-stone-600 transition">
-                            Lobby
+                        <button onclick="returnToMainLobby()" class="w-full py-2.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-extrabold text-xs uppercase tracking-wider transition">
+                            Return To Lobby
                         </button>
                     </div>
                 </div>
@@ -425,6 +457,37 @@
         </div>
     </div>
 
+    <!-- Victory / Elimination Banner Overlay -->
+    <div id="match-end-overlay" class="hidden fixed inset-0 z-40 items-center justify-center bg-stone-950/85 backdrop-blur-md p-4">
+        <div class="glass-panel max-w-md w-full p-7 rounded-3xl text-center shadow-2xl border border-lime-400/40">
+            <div id="end-banner-tag" class="inline-block px-3 py-1 rounded-full bg-lime-400/20 text-lime-300 text-xs font-black uppercase tracking-widest mb-2">
+                VICTORY ROYALE
+            </div>
+            <h2 id="end-banner-title" class="text-3xl sm:text-4xl font-black text-white">VICTORY ROYALE!</h2>
+            <p id="end-banner-sub" class="text-xs text-stone-300 mt-2">You outlasted every threat in Dead Shot.</p>
+
+            <div class="grid grid-cols-2 gap-3 my-5">
+                <div class="bg-stone-900/90 p-3 rounded-2xl border border-stone-700">
+                    <div class="text-[10px] font-bold uppercase text-stone-400">Eliminations</div>
+                    <div id="end-stat-kills" class="mono text-2xl font-black text-red-400 mt-0.5">0</div>
+                </div>
+                <div class="bg-stone-900/90 p-3 rounded-2xl border border-stone-700">
+                    <div class="text-[10px] font-bold uppercase text-stone-400">Placement</div>
+                    <div id="end-stat-place" class="mono text-2xl font-black text-lime-400 mt-0.5">#1 / 20</div>
+                </div>
+            </div>
+
+            <div class="flex gap-2.5">
+                <button onclick="resetSoloMatch()" class="flex-1 py-3 rounded-2xl bg-lime-400 hover:bg-lime-300 text-stone-950 font-black text-xs uppercase tracking-wider transition">
+                    Play Again
+                </button>
+                <button onclick="returnToMainLobby()" class="flex-1 py-3 rounded-2xl bg-stone-800 hover:bg-stone-700 text-white font-black text-xs uppercase tracking-wider transition">
+                    Main Lobby
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // =========================================================================
         // 1. GAME CONSTANTS & COMBAT CONFIGURATION
@@ -434,31 +497,50 @@
         const BOT_MAX_HEALTH = 100;
         const HEADSHOT_DAMAGE = 25;
         const BODYSHOT_DAMAGE = 15;
-        const BOT_HEADSHOT_DAMAGE = 30;
-        const BOT_BODYSHOT_DAMAGE = 20;
-        const ZOMBIE_CLAW_DAMAGE = 22;
+        const BOT_HEADSHOT_DAMAGE = 18;
+        const BOT_BODYSHOT_DAMAGE = 10;
+        const ZOMBIE_CLAW_DAMAGE = 12;
         const BOT_COUNT = 19;
         const MEDKIT_DURATION = 3.0;
 
         const ZOMBIE_NAMES = [
             "Walker-01", "Rotter-02", "Stalker-03", "Shambler-04", "Crawler-05",
             "Biter-06", "Ghoul-07", "Lurker-08", "Infected-09", "Husk-10",
-            "Brute-11", "Fester-12", "Ravager-13", "Plague-14", "Gnasher-15",
-            "Screecher-16", "Hollow-17", "Wretch-18", "Blight-19"
+            "Brute-11", "Gnasher-12", "Revenant-13", "Spitter-14", "Decay-15",
+            "Howler-16", "Fiend-17", "Wretch-18", "Apex-19"
         ];
 
         const BOT_CALLSIGNS = [
-            "Viper-01", "Ghost-02", "Reaper-03", "Falcon-04", "Shadow-05",
-            "Cobra-06", "Nomad-07", "Titan-08", "Specter-09", "Rogue-10",
-            "Raven-11", "Wolf-12", "Jackal-13", "Hawk-14", "Blaze-15",
-            "Storm-16", "Apex-17", "Hunter-18", "Phantom-19"
+            "Sgt. Vance", "Cpl. Mercer", "Pvt. Kestrel", "Lt. Thorne", "Spec. Rook",
+            "Capt. Strider", "Sgt. Nomad", "Cpl. Vector", "Pvt. Havoc", "Lt. Frost",
+            "Spec.Cipher", "Sgt. Talon", "Cpl. Orion", "Pvt. Cobalt", "Lt. Reaper",
+            "Spec. Warden", "Sgt. Apex", "Cpl. Lynx", "Maj.Titan"
         ];
 
-        let gameMode = "zombies";   // "zombies" or "classic"
+        let gameMode = "zombies";   // "zombies", "classic", or "pvp"
         let buildEnabled = true;    // true = Build Mode, false = Zero Build
         let lobbyDifficulty = "normal";
         let selectedMap = "woodland";
+        let selectedSkin = "ranger";
         let inMainLobby = true;
+
+        // Multiplayer State
+        let mpActiveRoom = null;
+        let mpRemotePlayers = {};   // uid -> { data, mesh, targetPos }
+        let mpRenderedBuilds = new Set();
+        let mpSyncAccumulator = 0;
+        let mpUnsubRoom = null;
+        let mpUnsubPlayers = null;
+        let mpUnsubEvents = null;
+        let mpUnsubBuilds = null;
+        let mpProcessedEvents = new Set();
+
+        const PLAYER_SKINS = {
+            ranger:  { label: "Ranger Olive",  sleeve: 0x3b4d34, glove: 0x1f2421, gunPrimary: 0x1e2226, gunAccent: 0x3a4736, metalness: 0.75, hudHex: "#a3e635" },
+            crimson: { label: "Crimson Ops",   sleeve: 0x991b1b, glove: 0x18181b, gunPrimary: 0x27272a, gunAccent: 0xdc2626, metalness: 0.80, hudHex: "#f87171" },
+            arctic:  { label: "Arctic Ghost",  sleeve: 0xe2e8f0, glove: 0x334155, gunPrimary: 0xcbd5e1, gunAccent: 0x38bdf8, metalness: 0.65, hudHex: "#38bdf8" },
+            gold:    { label: "Gold Champion", sleeve: 0x1c1917, glove: 0xd97706, gunPrimary: 0xfacc15, gunAccent: 0xb45309, metalness: 0.92, hudHex: "#facc15" }
+        };
 
         // =========================================================================
         // 2. AUDIO ENGINE (TONE.JS PROCEDURAL SYNTHS)
@@ -543,6 +625,8 @@
         let scene, camera, renderer, clock;
         let worldGroup;
         let weaponHolder, weaponMeshes = [];
+        let firstPersonArmGroup, sleeveMesh, gloveMesh;
+        let skinPrimaryMat, skinAccentMat;
         let blueprintViewModel, buildPreviewGroup;
         let colliders = [];
         let builtStructures = [];
@@ -607,20 +691,33 @@
         }
 
         function buildFirstPersonViewModels() {
-            const darkMetal = new THREE.MeshStandardMaterial({ color: 0x1e2226, roughness: 0.4, metalness: 0.8 });
-            const oliveBody = new THREE.MeshStandardMaterial({ color: 0x3a4736, roughness: 0.6, metalness: 0.3 });
+            const skinCfg = PLAYER_SKINS[selectedSkin] || PLAYER_SKINS.ranger;
+            skinPrimaryMat = new THREE.MeshStandardMaterial({ color: skinCfg.gunPrimary, roughness: 0.35, metalness: skinCfg.metalness });
+            skinAccentMat = new THREE.MeshStandardMaterial({ color: skinCfg.gunAccent, roughness: 0.5, metalness: 0.4 });
             const woodMat = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.8 });
             const silverBlade = new THREE.MeshStandardMaterial({ color: 0xd4d8dd, roughness: 0.25, metalness: 0.9 });
 
+            // First-Person Right Forearm & Tactical Glove (changes color with equipped skin)
+            firstPersonArmGroup = new THREE.Group();
+            const sleeveMat = new THREE.MeshStandardMaterial({ color: skinCfg.sleeve, roughness: 0.8 });
+            const gloveMat = new THREE.MeshStandardMaterial({ color: skinCfg.glove, roughness: 0.6 });
+            sleeveMesh = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.085, 0.34), sleeveMat);
+            sleeveMesh.position.set(0.02, -0.09, 0.22);
+            sleeveMesh.rotation.x = 0.12;
+            gloveMesh = new THREE.Mesh(new THREE.BoxGeometry(0.078, 0.078, 0.12), gloveMat);
+            gloveMesh.position.set(0.01, -0.075, 0.04);
+            firstPersonArmGroup.add(sleeveMesh, gloveMesh);
+            weaponHolder.add(firstPersonArmGroup);
+
             // Slot 0: M4A1 Carbine
             const m4 = new THREE.Group();
-            const m4Receiver = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.09, 0.42), darkMetal);
-            const m4Barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.34, 8), darkMetal);
+            const m4Receiver = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.09, 0.42), skinPrimaryMat);
+            const m4Barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.34, 8), skinPrimaryMat);
             m4Barrel.rotation.x = Math.PI / 2;
             m4Barrel.position.set(0, 0.015, -0.34);
-            const m4Handguard = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.065, 0.24), oliveBody);
+            const m4Handguard = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.065, 0.24), skinAccentMat);
             m4Handguard.position.set(0, 0.01, -0.22);
-            const m4Mag = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.16, 0.07), darkMetal);
+            const m4Mag = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.16, 0.07), skinAccentMat);
             m4Mag.position.set(0, -0.09, -0.06);
             m4Mag.rotation.x = 0.2;
             m4.add(m4Receiver, m4Barrel, m4Handguard, m4Mag);
@@ -629,11 +726,11 @@
 
             // Slot 1: M870 Breacher Shotgun
             const m870 = new THREE.Group();
-            const sgBody = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.085, 0.46), darkMetal);
-            const sgBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 10), darkMetal);
+            const sgBody = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.085, 0.46), skinPrimaryMat);
+            const sgBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 10), skinPrimaryMat);
             sgBarrel.rotation.x = Math.PI / 2;
             sgBarrel.position.set(0, 0.02, -0.36);
-            const sgPump = new THREE.Mesh(new THREE.BoxGeometry(0.082, 0.07, 0.18), woodMat);
+            const sgPump = new THREE.Mesh(new THREE.BoxGeometry(0.082, 0.07, 0.18), skinAccentMat);
             sgPump.position.set(0, -0.01, -0.28);
             m870.add(sgBody, sgBarrel, sgPump);
             weaponHolder.add(m870);
@@ -641,8 +738,8 @@
 
             // Slot 2: M9 Tactical Pistol
             const m9 = new THREE.Group();
-            const pSlide = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.065, 0.24), darkMetal);
-            const pGrip = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.13, 0.065), oliveBody);
+            const pSlide = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.065, 0.24), skinPrimaryMat);
+            const pGrip = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.13, 0.065), skinAccentMat);
             pGrip.position.set(0, -0.07, 0.06);
             pGrip.rotation.x = -0.22;
             m9.add(pSlide, pGrip);
@@ -651,7 +748,7 @@
 
             // Slot 3: Combat Knife
             const knife = new THREE.Group();
-            const kHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.025, 0.14, 8), darkMetal);
+            const kHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.025, 0.14, 8), skinAccentMat);
             kHandle.rotation.x = Math.PI / 3;
             const kBlade = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.035, 0.22), silverBlade);
             kBlade.position.set(0, 0.06, -0.12);
@@ -674,7 +771,7 @@
                 new THREE.BoxGeometry(0.035, 0.11, 0.17),
                 new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
             );
-            const handleBar = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), darkMetal);
+            const handleBar = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.025, 0.03), woodMat);
             handleBar.position.set(0, 0.105, 0);
             medkit.add(redBox, whiteCrossH, whiteCrossV, handleBar);
             weaponHolder.add(medkit);
@@ -1302,6 +1399,16 @@
 
             scene.add(group);
             weaponHolder.position.y += 0.04;
+
+            if (mpActiveRoom && window.mpPublishBuild) {
+                window.mpPublishBuild({
+                    type: player.buildPiece,
+                    x: snap.gx,
+                    z: snap.gz,
+                    baseY: snap.gy,
+                    rotY: snap.cardRot
+                });
+            }
         }
 
         function updateWoodHUD() {
@@ -1475,53 +1582,99 @@
                 root.add(leftLeg, rightLeg, torso, head, leftEye, rightEye, leftArm, rightArm);
                 return { root, head, torso, leftLeg, rightLeg, leftArm, rightArm };
             } else {
-                // Full Military Uniform for Classic Battle Royale Bots
-                const oliveTunicMat = new THREE.MeshStandardMaterial({ color: 0x3b4d34, roughness: 0.75 });
-                const tacticalVestMat = new THREE.MeshStandardMaterial({ color: 0x262e23, roughness: 0.65 });
-                const cargoPantsMat = new THREE.MeshStandardMaterial({ color: 0x4b533c, roughness: 0.8 });
-                const helmetMat = new THREE.MeshStandardMaterial({ color: 0x2d3a27, roughness: 0.5, metalness: 0.3 });
-                const visorMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.2, metalness: 0.85 });
+                // Blockpost 2.0 Voxel Tactical Soldier Style for Classic Battle Royale Bots
+                const oliveTunicMat = new THREE.MeshStandardMaterial({ color: 0x3b4d34, roughness: 0.72 });
+                const tacticalVestMat = new THREE.MeshStandardMaterial({ color: 0x222920, roughness: 0.6 });
+                const pouchMat = new THREE.MeshStandardMaterial({ color: 0x4b5542, roughness: 0.65 });
+                const cargoPantsMat = new THREE.MeshStandardMaterial({ color: 0x4b533c, roughness: 0.78 });
+                const kneePadMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
+                const helmetMat = new THREE.MeshStandardMaterial({ color: 0x2d3a27, roughness: 0.45, metalness: 0.25 });
+                const skinFaceMat = new THREE.MeshStandardMaterial({ color: 0xd6a57c, roughness: 0.65 });
+                const goggleFrameMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.4 });
+                const goggleLensMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
                 const bootMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.7 });
                 const gunMat = new THREE.MeshStandardMaterial({ color: 0x18181b, metalness: 0.8, roughness: 0.3 });
 
-                const leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.62, 0.24), cargoPantsMat);
-                leftLeg.position.set(-0.16, 0.47, 0);
+                // Chunky Blockpost Legs + Knee Pads + Boots
+                const leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), cargoPantsMat);
+                leftLeg.position.set(-0.17, 0.47, 0);
                 leftLeg.castShadow = true;
 
-                const rightLeg = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.62, 0.24), cargoPantsMat);
-                rightLeg.position.set(0.16, 0.47, 0);
+                const rightLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), cargoPantsMat);
+                rightLeg.position.set(0.17, 0.47, 0);
                 rightLeg.castShadow = true;
 
-                const leftBoot = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.3), bootMat);
-                leftBoot.position.set(-0.16, 0.09, 0.02);
-                const rightBoot = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.18, 0.3), bootMat);
-                rightBoot.position.set(0.16, 0.09, 0.02);
+                const leftKnee = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.14, 0.31), kneePadMat);
+                leftKnee.position.set(-0.17, 0.48, 0.02);
+                const rightKnee = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.14, 0.31), kneePadMat);
+                rightKnee.position.set(0.17, 0.48, 0.02);
 
-                const torso = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.76, 0.34), oliveTunicMat);
-                torso.position.set(0, 1.16, 0);
+                const leftBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), bootMat);
+                leftBoot.position.set(-0.17, 0.1, 0.03);
+                const rightBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), bootMat);
+                rightBoot.position.set(0.17, 0.1, 0.03);
+
+                // Blocky Tactical Torso + Chest Rig + Ammo Pouches + Backpack
+                const torso = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.72, 0.38), oliveTunicMat);
+                torso.position.set(0, 1.14, 0);
                 torso.castShadow = true;
 
-                const vest = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.56, 0.39), tacticalVestMat);
-                vest.position.set(0, 1.2, 0);
+                const vest = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.56, 0.44), tacticalVestMat);
+                vest.position.set(0, 1.16, 0);
 
-                const head = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.42), helmetMat);
-                head.position.set(0, 1.76, 0);
+                const pouchL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), pouchMat);
+                pouchL.position.set(-0.16, 1.08, 0.24);
+                const pouchR = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), pouchMat);
+                pouchR.position.set(0.16, 1.08, 0.24);
+
+                const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.54, 0.22), pouchMat);
+                backpack.position.set(0, 1.18, -0.28);
+
+                // Blocky Shoulder Pads & Arms
+                const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), oliveTunicMat);
+                leftArm.position.set(-0.48, 1.16, 0.04);
+                const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), oliveTunicMat);
+                rightArm.position.set(0.48, 1.16, 0.12);
+                rightArm.rotation.x = -0.45;
+
+                const leftShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), tacticalVestMat);
+                leftShoulder.position.set(-0.49, 1.38, 0.02);
+                const rightShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), tacticalVestMat);
+                rightShoulder.position.set(0.49, 1.38, 0.02);
+
+                // Signature Oversized Blockpost Cubic Head + Tactical Helmet + Visor Goggles
+                const head = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.56, 0.56), skinFaceMat);
+                head.position.set(0, 1.8, 0);
                 head.castShadow = true;
 
-                const visor = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.14, 0.05), visorMat);
-                visor.position.set(0, 1.78, 0.21);
+                const helmetTop = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.28, 0.62), helmetMat);
+                helmetTop.position.set(0, 1.98, -0.01);
+                const helmetRim = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.08, 0.65), helmetMat);
+                helmetRim.position.set(0, 1.88, 0.02);
 
-                const gun = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.12, 0.65), gunMat);
-                gun.position.set(0.36, 1.22, 0.28);
+                const goggleFrame = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.2, 0.1), goggleFrameMat);
+                goggleFrame.position.set(0, 1.81, 0.27);
+                const goggleGlass = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.13, 0.04), goggleLensMat);
+                goggleGlass.position.set(0, 1.81, 0.31);
 
-                root.add(leftLeg, rightLeg, leftBoot, rightBoot, torso, vest, head, visor, gun);
-                return { root, head, torso, leftLeg, rightLeg, leftArm: null, rightArm: null };
+                const gun = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.14, 0.72), gunMat);
+                gun.position.set(0.46, 1.16, 0.36);
+
+                root.add(
+                    leftLeg, rightLeg, leftKnee, rightKnee, leftBoot, rightBoot,
+                    torso, vest, pouchL, pouchR, backpack,
+                    leftArm, rightArm, leftShoulder, rightShoulder,
+                    head, helmetTop, helmetRim, goggleFrame, goggleGlass, gun
+                );
+                return { root, head, torso, leftLeg, rightLeg, leftArm, rightArm };
             }
         }
 
         function spawnAllBots() {
             bots.forEach(b => scene.remove(b.mesh.root));
             bots = [];
+
+            if (gameMode === "pvp") return;
 
             const isZombieMode = gameMode === "zombies";
             const names = isZombieMode ? ZOMBIE_NAMES : BOT_CALLSIGNS;
@@ -1544,11 +1697,10 @@
                     yaw: Math.random() * Math.PI * 2,
                     health: BOT_MAX_HEALTH,
                     alive: true,
-                    kills: 0,
-                    fireCooldown: 0.7 + Math.random() * 1.1,
+                    fireCooldown: 0.6 + Math.random() * 1.2,
                     strafeDir: Math.random() > 0.5 ? 1 : -1,
                     strafeTimer: 1.5 + Math.random() * 2,
-                    walkPhase: Math.random() * Math.PI * 2,
+                    walkPhase: Math.random() * 6,
                     mesh
                 });
             }
@@ -1820,6 +1972,9 @@
 
             const headTargets = [];
             const bodyTargets = [];
+            const remoteHeadTargets = [];
+            const remoteBodyTargets = [];
+
             bots.forEach(b => {
                 if (!b.alive) return;
                 b.mesh.head.userData = { bot: b, isHead: true };
@@ -1829,7 +1984,19 @@
                 headTargets.push(b.mesh.head);
                 bodyTargets.push(b.mesh.torso, b.mesh.leftLeg, b.mesh.rightLeg);
             });
-            const allTargets = [...headTargets, ...bodyTargets];
+
+            Object.keys(mpRemotePlayers).forEach(uid => {
+                const rp = mpRemotePlayers[uid];
+                if (!rp || !rp.data || !rp.data.alive) return;
+                rp.mesh.head.userData = { remoteUid: uid, remoteName: rp.data.name, isHead: true };
+                rp.mesh.torso.userData = { remoteUid: uid, remoteName: rp.data.name, isHead: false };
+                rp.mesh.leftLeg.userData = { remoteUid: uid, remoteName: rp.data.name, isHead: false };
+                rp.mesh.rightLeg.userData = { remoteUid: uid, remoteName: rp.data.name, isHead: false };
+                remoteHeadTargets.push(rp.mesh.head);
+                remoteBodyTargets.push(rp.mesh.torso, rp.mesh.leftLeg, rp.mesh.rightLeg);
+            });
+
+            const allTargets = [...headTargets, ...bodyTargets, ...remoteHeadTargets, ...remoteBodyTargets];
 
             for (let p = 0; p < w.pellets; p++) {
                 const dir = forward.clone();
@@ -1843,11 +2010,16 @@
 
                 if (hits.length > 0) {
                     const hit = hits[0];
-                    const { bot, isHead } = hit.object.userData;
+                    const uData = hit.object.userData;
                     if (w.id !== "knife") spawnTracer(muzzlePos, hit.point, 0xfef08a);
-                    spawnImpactSparks(hit.point, isHead ? 0xef4444 : 0xfacc15);
+                    spawnImpactSparks(hit.point, uData.isHead ? 0xef4444 : 0xfacc15);
                     flashHitmarker();
-                    applyDamageToBot(bot, isHead ? HEADSHOT_DAMAGE : BODYSHOT_DAMAGE, player.name, true, isHead);
+                    if (uData.bot) {
+                        applyDamageToBot(uData.bot, uData.isHead ? HEADSHOT_DAMAGE : BODYSHOT_DAMAGE, player.name, true, uData.isHead);
+                    } else if (uData.remoteUid && window.mpSendHitEvent) {
+                        const dmg = uData.isHead ? HEADSHOT_DAMAGE : BODYSHOT_DAMAGE;
+                        window.mpSendHitEvent(uData.remoteUid, uData.remoteName, dmg, uData.isHead);
+                    }
                 } else {
                     const endPt = origin.clone().addScaledVector(dir, Math.min(w.range, 120));
                     if (w.id !== "knife") spawnTracer(muzzlePos, endPt, 0xfde047);
@@ -1876,7 +2048,6 @@
 
         function applyDamageToPlayer(amount, attackerName) {
             if (!player.alive) return;
-            if (player.isHealing) cancelMedkitHeal();
             player.health = Math.max(0, player.health - amount);
 
             const flash = document.getElementById("damage-flash");
@@ -1897,6 +2068,13 @@
         }
 
         function checkMatchVictory() {
+            if (gameMode === "pvp") {
+                const alivePeers = Object.values(mpRemotePlayers).filter(rp => rp.data && rp.data.alive).length;
+                if (Object.keys(mpRemotePlayers).length > 0 && alivePeers === 0 && player.alive) {
+                    showMatchEndBanner(true, "PVP CHAMPION!", "You defeated all online players in the arena.", "#1");
+                }
+                return;
+            }
             const aliveBots = bots.filter(b => b.alive).length;
             if (aliveBots === 0 && player.alive) {
                 const subText = gameMode === "zombies"
@@ -2232,17 +2410,21 @@
             document.getElementById("hud-kills-val").textContent = player.kills;
 
             const aliveEnemies = bots.filter(b => b.alive).length;
-            const enemyNoun = gameMode === "zombies" ? "Zombies" : "Enemies";
-            document.getElementById("hud-mode-badge").textContent = `DEAD SHOT (${aliveEnemies} ${enemyNoun})`;
-            document.getElementById("hud-submode-badge").textContent = gameMode === "zombies" ? "ZOMBIE SURVIVAL" : "CLASSIC BR";
+            const onlinePeers = Object.values(mpRemotePlayers).filter(rp => rp.data && rp.data.alive).length;
+            if (gameMode === "pvp") {
+                document.getElementById("hud-mode-badge").textContent = `PVP ARENA (${onlinePeers + 1} Live Players)`;
+                document.getElementById("hud-submode-badge").textContent = mpActiveRoom ? `ROOM: ${mpActiveRoom}` : "ONLINE PVP";
+            } else {
+                const enemyNoun = gameMode === "zombies" ? "Zombies" : "Enemies";
+                const roomTag = mpActiveRoom ? ` • RM ${mpActiveRoom}` : "";
+                document.getElementById("hud-mode-badge").textContent = `DEAD SHOT (${aliveEnemies} ${enemyNoun}${roomTag})`;
+                document.getElementById("hud-submode-badge").textContent = gameMode === "zombies" ? "ZOMBIE SURVIVAL" : "CLASSIC BR";
+            }
 
-            const buildBar = document.getElementById("build-bar");
-            const weaponBar = document.getElementById("weapon-bar");
+            const buildBar = document.getElementById("hud-build-bar");
+            const weaponBar = document.getElementById("hud-weapon-bar");
 
-            if (player.buildMode && buildEnabled) {
-                document.getElementById("hud-weapon-name").textContent = `BLUEPRINT • ${player.buildPiece.toUpperCase()}`;
-                document.getElementById("hud-ammo-mag").textContent = "10";
-                document.getElementById("hud-ammo-res").textContent = "WOOD / PIECE";
+            if (player.buildMode) {
                 if (buildBar) {
                     buildBar.classList.remove("hidden");
                     buildBar.classList.add("flex");
@@ -2390,42 +2572,306 @@
             document.getElementById("match-end-overlay").classList.remove("flex");
             document.getElementById("pause-menu-overlay").classList.add("hidden");
             document.getElementById("pause-menu-overlay").classList.remove("flex");
-            document.getElementById("kill-feed").innerHTML = "";
+
             isPaused = false;
+            cancelMedkitHeal();
+
+            builtStructures.forEach(s => { if (s.mesh) scene.remove(s.mesh); });
+            builtStructures = [];
+            buildSelectedMap(selectedMap);
 
             player.pos.set(0, 0, 0);
             player.vel.set(0, 0, 0);
             player.yaw = 0;
             player.pitch = 0;
+            if (mpActiveRoom && window.mpGetSpawnCoordinates) {
+                const sp = window.mpGetSpawnCoordinates();
+                player.pos.set(sp.x, 0, sp.z);
+                player.yaw = sp.yaw;
+            }
             player.health = PLAYER_MAX_HEALTH;
             player.alive = true;
             player.kills = 0;
-            player.medkits = 0;
+            player.grounded = true;
             player.reloading = false;
-            cancelMedkitHeal();
+            player.medkits = 0;
+            player.wood = buildEnabled ? 150 : 0;
+            player.buildMode = false;
+            player.buildPiece = "wall";
+            if (blueprintViewModel) blueprintViewModel.visible = false;
+            if (buildPreviewGroup) buildPreviewGroup.visible = false;
+            updateWoodHUD();
 
             player.weapons[0].owned = false; player.weapons[0].mag = 30; player.weapons[0].reserve = 150;
-            player.weapons[1].owned = false; player.weapons[1].mag = 6; player.weapons[1].reserve = 36;
+            player.weapons[1].owned = false; player.weapons[1].mag = 6;  player.weapons[1].reserve = 36;
             player.weapons[2].owned = true;  player.weapons[2].mag = 15; player.weapons[2].reserve = 90;
             player.weapons[3].owned = true;
             player.weapons[4].owned = false; player.weapons[4].mag = 0;
 
-            player.buildMode = false;
-            player.buildPiece = "wall";
-            player.wood = buildEnabled ? 150 : 0;
-            setLobbyBuildMode(buildEnabled);
-            if (blueprintViewModel) blueprintViewModel.visible = false;
-            if (buildPreviewGroup) buildPreviewGroup.visible = false;
-            builtStructures.forEach(s => scene.remove(s.mesh));
-            builtStructures = [];
-            updateWoodHUD();
-
-            buildSelectedMap(selectedMap);
             switchWeaponSlot(2);
             spawnSupplyChests();
             spawnAllBots();
             updateHUD();
             updateRosterUI();
+
+            const modeLabel = gameMode === "zombies" ? "Zombie Survival" : (gameMode === "classic" ? "Classic BR" : "PvP Arena");
+            addKillFeedEntry(`Deployed into ${selectedMap.toUpperCase()} (${modeLabel}) — 100 HP`, "text-lime-300");
+        }
+
+        function switchLobbyTab(tabName) {
+            const gpTab = document.getElementById("lobby-tab-gameplay");
+            const lkTab = document.getElementById("lobby-tab-locker");
+            const gpBtn = document.getElementById("tab-btn-gameplay");
+            const lkBtn = document.getElementById("tab-btn-locker");
+
+            if (tabName === "locker") {
+                if (gpTab) gpTab.classList.add("hidden");
+                if (lkTab) lkTab.classList.remove("hidden");
+                if (lkBtn) lkBtn.className = "px-4 py-1.5 rounded-xl bg-lime-400 text-stone-950 font-black text-xs uppercase tracking-wider shadow transition";
+                if (gpBtn) gpBtn.className = "px-4 py-1.5 rounded-xl text-stone-300 hover:text-white font-extrabold text-xs uppercase tracking-wider transition";
+                initLockerPreviewScene();
+                resizeLockerPreview();
+            } else {
+                if (lkTab) lkTab.classList.add("hidden");
+                if (gpTab) gpTab.classList.remove("hidden");
+                if (gpBtn) gpBtn.className = "px-4 py-1.5 rounded-xl bg-lime-400 text-stone-950 font-black text-xs uppercase tracking-wider shadow transition";
+                if (lkBtn) lkBtn.className = "px-4 py-1.5 rounded-xl text-stone-300 hover:text-white font-extrabold text-xs uppercase tracking-wider transition";
+            }
+        }
+
+        // =========================================================================
+        // 11B. LOCKER 3D CHARACTER & WEAPON SKIN PREVIEW RENDERER
+        // =========================================================================
+        let lockerScene, lockerCamera, lockerRenderer, lockerCharGroup;
+        let lkBodyMat, lkVestMat, lkHeadMat, lkGunPrimaryMat, lkGunAccentMat;
+        let lkDragActive = false, lkLastX = 0, lkManualYaw = 0.45;
+
+        function initLockerPreviewScene() {
+            const canvas = document.getElementById("locker-preview-canvas");
+            if (!canvas || lockerRenderer) return;
+
+            lockerScene = new THREE.Scene();
+            lockerCamera = new THREE.PerspectiveCamera(40, 1.6, 0.1, 30);
+            lockerCamera.position.set(0, 1.32, 3.35);
+            lockerCamera.lookAt(0, 1.05, 0);
+
+            lockerRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            lockerRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const hemi = new THREE.HemisphereLight(0xffffff, 0x1c1917, 1.15);
+            const keyLight = new THREE.DirectionalLight(0xfffbeb, 1.25);
+            keyLight.position.set(2.5, 4, 3.5);
+            const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.65);
+            rimLight.position.set(-2.5, 2, -2.5);
+            lockerScene.add(hemi, keyLight, rimLight);
+
+            const cfg = PLAYER_SKINS[selectedSkin] || PLAYER_SKINS.ranger;
+            lkBodyMat = new THREE.MeshStandardMaterial({ color: cfg.sleeve, roughness: 0.65 });
+            lkVestMat = new THREE.MeshStandardMaterial({ color: cfg.gunAccent, roughness: 0.5 });
+            lkHeadMat = new THREE.MeshStandardMaterial({ color: cfg.glove, roughness: 0.45 });
+            lkGunPrimaryMat = new THREE.MeshStandardMaterial({ color: cfg.gunPrimary, roughness: 0.3, metalness: cfg.metalness });
+            lkGunAccentMat = new THREE.MeshStandardMaterial({ color: cfg.gunAccent, roughness: 0.45 });
+            const lkSkinFaceMat = new THREE.MeshStandardMaterial({ color: 0xd6a57c, roughness: 0.65 });
+            const lkDarkGearMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
+
+            lockerCharGroup = new THREE.Group();
+
+            // Pedestal ring
+            const pedestal = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.78, 0.88, 0.1, 24),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.7, roughness: 0.3 })
+            );
+            pedestal.position.y = -0.05;
+
+            // Blockpost 2.0 Chunky Voxel Legs + Knee Pads + Boots
+            const leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), lkHeadMat);
+            leftLeg.position.set(-0.17, 0.47, 0);
+            const rightLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), lkHeadMat);
+            rightLeg.position.set(0.17, 0.47, 0);
+
+            const leftKnee = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.14, 0.31), lkDarkGearMat);
+            leftKnee.position.set(-0.17, 0.48, 0.02);
+            const rightKnee = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.14, 0.31), lkDarkGearMat);
+            rightKnee.position.set(0.17, 0.48, 0.02);
+
+            const leftBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), lkDarkGearMat);
+            leftBoot.position.set(-0.17, 0.1, 0.03);
+            const rightBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), lkDarkGearMat);
+            rightBoot.position.set(0.17, 0.1, 0.03);
+
+            // Blockpost Voxel Torso + Tactical Vest + Chest Pouches + Backpack
+            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.72, 0.38), lkBodyMat);
+            torso.position.set(0, 1.14, 0);
+            const vest = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.56, 0.44), lkVestMat);
+            vest.position.set(0, 1.16, 0);
+
+            const pouchL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), lkHeadMat);
+            pouchL.position.set(-0.16, 1.08, 0.24);
+            const pouchR = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), lkHeadMat);
+            pouchR.position.set(0.16, 1.08, 0.24);
+
+            const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.54, 0.22), lkHeadMat);
+            backpack.position.set(0, 1.18, -0.28);
+
+            // Blocky Shoulder Pads & Arms
+            const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), lkBodyMat);
+            leftArm.position.set(-0.48, 1.15, 0.08);
+            leftArm.rotation.x = -0.35;
+            const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), lkBodyMat);
+            rightArm.position.set(0.48, 1.15, 0.16);
+            rightArm.rotation.x = -0.65;
+
+            const leftShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), lkVestMat);
+            leftShoulder.position.set(-0.49, 1.38, 0.02);
+            const rightShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), lkVestMat);
+            rightShoulder.position.set(0.49, 1.38, 0.02);
+
+            // Oversized Blockpost Cubic Head + Combat Helmet + Glowing Goggles
+            const headFace = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.56, 0.56), lkSkinFaceMat);
+            headFace.position.set(0, 1.8, 0);
+
+            const helmetTop = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.28, 0.62), lkHeadMat);
+            helmetTop.position.set(0, 1.98, -0.01);
+            const helmetRim = new THREE.Mesh(new THREE.BoxGeometry(0.64, 0.08, 0.65), lkVestMat);
+            helmetRim.position.set(0, 1.88, 0.02);
+
+            const goggleFrame = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.2, 0.1), lkDarkGearMat);
+            goggleFrame.position.set(0, 1.81, 0.27);
+            const visor = new THREE.Mesh(
+                new THREE.BoxGeometry(0.48, 0.13, 0.04),
+                new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+            );
+            visor.position.set(0, 1.81, 0.31);
+
+            // Blocky Voxel Carbine Rifle in Hands
+            const rifleBody = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.14, 0.74), lkGunPrimaryMat);
+            rifleBody.position.set(0.26, 1.14, 0.38);
+            rifleBody.rotation.y = -0.38;
+            const rifleMag = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.2, 0.11), lkGunAccentMat);
+            rifleMag.position.set(0.24, 1.02, 0.42);
+            rifleMag.rotation.y = -0.38;
+
+            lockerCharGroup.add(
+                pedestal, leftLeg, rightLeg, leftKnee, rightKnee, leftBoot, rightBoot,
+                torso, vest, pouchL, pouchR, backpack,
+                leftArm, rightArm, leftShoulder, rightShoulder,
+                headFace, helmetTop, helmetRim, goggleFrame, visor, rifleBody, rifleMag
+            );
+            lockerCharGroup.rotation.y = lkManualYaw;
+            lockerScene.add(lockerCharGroup);
+
+            canvas.addEventListener("mousedown", (e) => { lkDragActive = true; lkLastX = e.clientX; });
+            window.addEventListener("mouseup", () => { lkDragActive = false; });
+            window.addEventListener("mousemove", (e) => {
+                if (!lkDragActive) return;
+                lkManualYaw += (e.clientX - lkLastX) * 0.015;
+                lkLastX = e.clientX;
+            });
+            canvas.addEventListener("touchstart", (e) => {
+                lkDragActive = true;
+                lkLastX = e.changedTouches[0].clientX;
+            }, { passive: true });
+            canvas.addEventListener("touchend", () => { lkDragActive = false; }, { passive: true });
+            canvas.addEventListener("touchmove", (e) => {
+                if (!lkDragActive) return;
+                const x = e.changedTouches[0].clientX;
+                lkManualYaw += (x - lkLastX) * 0.015;
+                lkLastX = x;
+            }, { passive: true });
+
+            updateLockerPreviewMaterials();
+        }
+
+        function resizeLockerPreview() {
+            const canvas = document.getElementById("locker-preview-canvas");
+            if (!canvas || !lockerRenderer || !lockerCamera) return;
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                lockerRenderer.setSize(rect.width, rect.height, false);
+                lockerCamera.aspect = rect.width / rect.height;
+                lockerCamera.updateProjectionMatrix();
+            }
+        }
+
+        function updateLockerPreviewMaterials() {
+            const cfg = PLAYER_SKINS[selectedSkin] || PLAYER_SKINS.ranger;
+            if (lkBodyMat) lkBodyMat.color.setHex(cfg.sleeve);
+            if (lkVestMat) lkVestMat.color.setHex(cfg.gunAccent);
+            if (lkHeadMat) lkHeadMat.color.setHex(cfg.glove);
+            if (lkGunPrimaryMat) {
+                lkGunPrimaryMat.color.setHex(cfg.gunPrimary);
+                lkGunPrimaryMat.metalness = cfg.metalness;
+            }
+            if (lkGunAccentMat) lkGunAccentMat.color.setHex(cfg.gunAccent);
+        }
+
+        function syncLobbyCallsignPreview() {
+            const nameInput = document.getElementById("lobby-player-name");
+            const cleanName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Survivor-01";
+            player.name = cleanName;
+            const previewEl = document.getElementById("lobby-preview-name");
+            const tagEl = document.getElementById("locker-detail-tag");
+            if (previewEl) previewEl.textContent = `${cleanName} (You)`;
+            if (tagEl) tagEl.textContent = cleanName;
+        }
+
+        function setLobbySkin(skinKey) {
+            if (!PLAYER_SKINS[skinKey]) return;
+            selectedSkin = skinKey;
+            const cfg = PLAYER_SKINS[skinKey];
+
+            const colorSwatches = {
+                ranger: "bg-emerald-800",
+                crimson: "bg-red-600",
+                arctic: "bg-sky-300",
+                gold: "bg-amber-400"
+            };
+            const subLabels = {
+                ranger: "Standard Issue",
+                crimson: "Spec-Ops Red",
+                arctic: "Frost White",
+                gold: "Legendary Gold"
+            };
+
+            Object.keys(PLAYER_SKINS).forEach(k => {
+                const btn = document.getElementById("skin-" + k);
+                if (!btn) return;
+                const active = (k === skinKey);
+                btn.className = active
+                    ? "p-3 rounded-2xl bg-lime-500 text-stone-950 font-black text-xs uppercase text-left transition flex flex-col gap-1"
+                    : "p-3 rounded-2xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase text-left transition flex flex-col gap-1";
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full ${colorSwatches[k]} border-2 border-stone-950 inline-block"></span>
+                    <span>${PLAYER_SKINS[k].label}</span>
+                    <span class="text-[10px] ${active ? "opacity-85 font-bold" : "opacity-75 font-semibold"}">${subLabels[k]}</span>
+                `;
+            });
+
+            const badge = document.getElementById("lobby-skin-badge");
+            if (badge) {
+                badge.textContent = cfg.label.toUpperCase();
+                badge.style.backgroundColor = cfg.hudHex;
+            }
+
+            const gpSummary = document.getElementById("gameplay-skin-summary");
+            const brSkin = document.getElementById("lobby-briefing-skin");
+            const lkOutfit = document.getElementById("locker-detail-outfit");
+            const lkWrap = document.getElementById("locker-detail-wrap");
+            if (gpSummary) gpSummary.textContent = cfg.label.toUpperCase();
+            if (brSkin) brSkin.textContent = cfg.label;
+            if (lkOutfit) lkOutfit.textContent = `${cfg.label} Tactical`;
+            if (lkWrap) lkWrap.textContent = `${cfg.label} Finish`;
+
+            if (sleeveMesh) sleeveMesh.material.color.setHex(cfg.sleeve);
+            if (gloveMesh) gloveMesh.material.color.setHex(cfg.glove);
+            if (skinPrimaryMat) {
+                skinPrimaryMat.color.setHex(cfg.gunPrimary);
+                skinPrimaryMat.metalness = cfg.metalness;
+            }
+            if (skinAccentMat) {
+                skinAccentMat.color.setHex(cfg.gunAccent);
+            }
+            updateLockerPreviewMaterials();
         }
 
         function setLobbyBuildMode(enabled) {
@@ -2448,16 +2894,13 @@
 
         function setLobbyGameMode(mode) {
             gameMode = mode;
-            const zBtn = document.getElementById("mode-zombies");
-            const cBtn = document.getElementById("mode-classic");
-            if (zBtn && cBtn) {
-                zBtn.className = mode === "zombies"
-                    ? "py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition"
-                    : "py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition";
-                cBtn.className = mode === "classic"
-                    ? "py-2 rounded-xl bg-lime-500 text-stone-950 font-black text-xs uppercase transition"
-                    : "py-2 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-xs uppercase transition";
-            }
+            ["zombies", "classic", "pvp"].forEach(m => {
+                const btn = document.getElementById("mode-" + m);
+                if (!btn) return;
+                btn.className = mode === m
+                    ? "py-2 px-1 rounded-xl bg-lime-500 text-stone-950 font-black text-[11px] uppercase transition"
+                    : "py-2 px-1 rounded-xl bg-stone-800 text-stone-300 hover:bg-stone-700 font-extrabold text-[11px] uppercase transition";
+            });
 
             const topBadge = document.getElementById("lobby-top-badge");
             const subEl = document.getElementById("lobby-subtitle");
@@ -2469,11 +2912,16 @@
                 if (subEl) subEl.textContent = "Zombie Survival • 100 HP • 25 Headshot / 15 Body";
                 if (countEl) countEl.textContent = "19 ZOMBIES DETECTED";
                 if (labelEl) labelEl.textContent = "Infected Horde (x19)";
-            } else {
+            } else if (mode === "classic") {
                 if (topBadge) topBadge.textContent = "20-PLAYER SOLO • MILITARY BOTS";
                 if (subEl) subEl.textContent = "Classic Battle Royale • 100 HP • Bots Fight Each Other";
                 if (countEl) countEl.textContent = "19 MILITARY BOTS";
                 if (labelEl) labelEl.textContent = "Rival Military Squads (x19)";
+            } else {
+                if (topBadge) topBadge.textContent = "ONLINE MULTIPLAYER • LIVE PVP";
+                if (subEl) subEl.textContent = "Player vs Player Arena • 100 HP • Build & Battle Friends";
+                if (countEl) countEl.textContent = "LIVE PLAYERS ONLY";
+                if (labelEl) labelEl.textContent = "Online Opponents (Room)";
             }
         }
 
@@ -2517,6 +2965,9 @@
                 lobbyEl.classList.remove("flex");
             }
             resetSoloMatch();
+            if (mpActiveRoom && window.mpHostStartMatch) {
+                window.mpHostStartMatch();
+            }
             engageLookControl();
         }
 
@@ -2575,6 +3026,16 @@
                 ctx.fill();
             });
 
+            Object.values(mpRemotePlayers).forEach(rp => {
+                if (!rp || !rp.data || !rp.data.alive) return;
+                const mx = cx + rp.data.x * scale;
+                const my = cy + rp.data.z * scale;
+                ctx.fillStyle = "#38bdf8";
+                ctx.beginPath();
+                ctx.arc(mx, my, 3.3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
             const px = cx + player.pos.x * scale;
             const py = cy + player.pos.z * scale;
             ctx.save();
@@ -2604,8 +3065,28 @@
                 }
             }
 
+            if (window.updateRemotePlayersVisuals) {
+                window.updateRemotePlayersVisuals(rawDt);
+            }
+
+            if (mpActiveRoom && window.mpSyncLocalState) {
+                mpSyncAccumulator += rawDt;
+                if (mpSyncAccumulator >= 0.07) {
+                    mpSyncAccumulator = 0;
+                    window.mpSyncLocalState();
+                }
+            }
+
             if (camera && renderer && scene) {
                 renderer.render(scene, camera);
+            }
+            if (inMainLobby && lockerRenderer && lockerScene && lockerCamera && lockerCharGroup) {
+                const lkTab = document.getElementById("lobby-tab-locker");
+                if (lkTab && !lkTab.classList.contains("hidden")) {
+                    if (!lkDragActive) lkManualYaw += rawDt * 0.85;
+                    lockerCharGroup.rotation.y = lkManualYaw;
+                    lockerRenderer.render(lockerScene, lockerCamera);
+                }
             }
             drawMinimap();
         }
@@ -2615,6 +3096,7 @@
             buildSelectedMap(selectedMap);
             spawnSupplyChests();
             spawnAllBots();
+            setLobbySkin(selectedSkin);
             setLobbyGameMode(gameMode);
             setLobbyBuildMode(buildEnabled);
             setLobbyMap(selectedMap);
@@ -2623,6 +3105,781 @@
             updateRosterUI();
             animateLoop();
         };
+    </script>
+
+    <!-- Real-Time Cloud Multiplayer Sync Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, addDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let isRoomHost = false;
+        let lastKnownMatchNonce = 0;
+        let mpReadyPromise = null;
+        let mpChannel = null;
+        let mpHeartbeatTimer = null;
+
+        function setMpFeedback(msg, isError = false) {
+            const el = document.getElementById("mp-feedback-msg");
+            if (!el) return;
+            if (!msg) {
+                el.classList.add("hidden");
+                el.textContent = "";
+                return;
+            }
+            el.classList.remove("hidden");
+            el.className = `mt-2 text-[11px] font-bold ${isError ? "text-red-400" : "text-sky-300"}`;
+            el.textContent = msg;
+        }
+
+        function ensureLocalIdentity() {
+            if (currentUser && currentUser.uid) return currentUser;
+            const fallbackId = "player_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            currentUser = { uid: fallbackId, isOfflineFallback: true };
+            const uidEl = document.getElementById("mp-user-id");
+            const dotEl = document.getElementById("mp-status-dot");
+            const modeEl = document.getElementById("mp-conn-mode");
+            if (uidEl) uidEl.textContent = fallbackId;
+            if (dotEl) dotEl.className = "w-2 h-2 rounded-full bg-sky-400";
+            if (modeEl) {
+                modeEl.textContent = "LOCAL TAB ONLY";
+                modeEl.className = "mono text-[9px] font-black px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30";
+            }
+            return currentUser;
+        }
+
+        function spawnRemoteBuildMesh(b) {
+            const plankMat = new THREE.MeshStandardMaterial({ color: 0xa16207, roughness: 0.78 });
+            const group = new THREE.Group();
+            group.rotation.y = b.rotY || 0;
+
+            if (b.type === "wall") {
+                const wall = new THREE.Mesh(new THREE.BoxGeometry(BUILD_GRID_SIZE, BUILD_WALL_HEIGHT, 0.26), plankMat);
+                group.add(wall);
+                group.position.set(b.x, b.baseY + BUILD_WALL_HEIGHT / 2, b.z);
+                const isZAligned = Math.abs(Math.sin(b.rotY || 0)) > 0.5;
+                addBoxCollider(b.x, b.z, isZAligned ? 0.35 : BUILD_GRID_SIZE / 2, isZAligned ? BUILD_GRID_SIZE / 2 : 0.35, b.baseY, b.baseY + BUILD_WALL_HEIGHT);
+                builtStructures.push({ type: "wall", x: b.x, z: b.z, baseY: b.baseY, y: b.baseY + BUILD_WALL_HEIGHT, rotY: b.rotY || 0, mesh: group });
+            } else if (b.type === "floor") {
+                const floor = new THREE.Mesh(new THREE.BoxGeometry(BUILD_GRID_SIZE, 0.26, BUILD_GRID_SIZE), plankMat);
+                group.add(floor);
+                group.position.set(b.x, b.baseY + 0.13, b.z);
+                builtStructures.push({ type: "floor", x: b.x, z: b.z, baseY: b.baseY, y: b.baseY + 0.26, rotY: b.rotY || 0, mesh: group });
+            } else if (b.type === "ramp") {
+                const slopeLen = Math.hypot(BUILD_GRID_SIZE, BUILD_WALL_HEIGHT);
+                const ramp = new THREE.Mesh(new THREE.BoxGeometry(BUILD_GRID_SIZE, 0.26, slopeLen), plankMat);
+                ramp.rotation.x = Math.atan2(BUILD_WALL_HEIGHT, BUILD_GRID_SIZE);
+                group.add(ramp);
+                group.position.set(b.x, b.baseY + BUILD_WALL_HEIGHT / 2, b.z);
+                builtStructures.push({ type: "ramp", x: b.x, z: b.z, baseY: b.baseY, y: b.baseY + BUILD_WALL_HEIGHT, rotY: b.rotY || 0, mesh: group });
+            }
+            scene.add(group);
+        }
+
+        function initBroadcastBridge() {
+            if (typeof BroadcastChannel === "undefined") return;
+            mpChannel = new BroadcastChannel("deadshot_mp_bridge_" + appId);
+            mpChannel.onmessage = (e) => {
+                const msg = e.data;
+                if (!msg || !mpActiveRoom || msg.roomCode !== mpActiveRoom) return;
+                if (!currentUser || msg.senderUid === currentUser.uid) return;
+
+                if (msg.type === "player_state" && msg.player) {
+                    upsertRemotePlayer(msg.player);
+                } else if (msg.type === "build_piece" && msg.piece) {
+                    const key = `${msg.piece.type}_${msg.piece.x}_${msg.piece.baseY}_${msg.piece.z}`;
+                    if (!mpRenderedBuilds.has(key)) {
+                        mpRenderedBuilds.add(key);
+                        spawnRemoteBuildMesh(msg.piece);
+                    }
+                } else if (msg.type === "room_start" && !isRoomHost) {
+                    if (msg.map) setLobbyMap(msg.map);
+                    if (msg.gameMode) setLobbyGameMode(msg.gameMode);
+                    if (typeof msg.buildEnabled === "boolean") setLobbyBuildMode(msg.buildEnabled);
+                    if (msg.difficulty) setLobbyDifficulty(msg.difficulty);
+                    if (inMainLobby) {
+                        const nameInput = document.getElementById("lobby-player-name");
+                        player.name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Survivor-01";
+                        inMainLobby = false;
+                        const lobbyEl = document.getElementById("main-lobby-overlay");
+                        if (lobbyEl) {
+                            lobbyEl.classList.add("hidden");
+                            lobbyEl.classList.remove("flex");
+                        }
+                        resetSoloMatch();
+                        engageLookControl();
+                    }
+                } else if (msg.type === "hit" && msg.targetUid === currentUser.uid && player.alive) {
+                    applyDamageToPlayer(msg.damage || 15, msg.attackerName || "Online Player");
+                    if (!player.alive && window.mpSendKillConfirm) {
+                        window.mpSendKillConfirm(msg.attackerUid, msg.attackerName);
+                    }
+                } else if (msg.type === "elim") {
+                    if (msg.attackerUid === currentUser.uid) {
+                        player.kills += 1;
+                        updateHUD();
+                    }
+                    addKillFeedEntry(`${msg.attackerName} eliminated ${msg.victimName}`, "text-sky-300");
+                    checkMatchVictory();
+                } else if (msg.type === "player_leave") {
+                    if (mpRemotePlayers[msg.senderUid]) {
+                        scene.remove(mpRemotePlayers[msg.senderUid].mesh.root);
+                        delete mpRemotePlayers[msg.senderUid];
+                        refreshPartyUI();
+                    }
+                }
+            };
+        }
+
+        function initMultiplayerService() {
+            initBroadcastBridge();
+            mpReadyPromise = (async () => {
+                try {
+                    if (typeof __firebase_config === "undefined" || !__firebase_config) {
+                        ensureLocalIdentity();
+                        return;
+                    }
+                    const firebaseConfig = JSON.parse(__firebase_config);
+                    const app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+
+                    if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+
+                    if (auth.currentUser) {
+                        currentUser = auth.currentUser;
+                        const uidEl = document.getElementById("mp-user-id");
+                        const dotEl = document.getElementById("mp-status-dot");
+                        const modeEl = document.getElementById("mp-conn-mode");
+                        if (uidEl) uidEl.textContent = currentUser.uid;
+                        if (dotEl) dotEl.className = "w-2 h-2 rounded-full bg-lime-400";
+                        if (modeEl) {
+                            modeEl.textContent = "CLOUD ONLINE";
+                            modeEl.className = "mono text-[9px] font-black px-2 py-0.5 rounded bg-lime-500/20 text-lime-300 border border-lime-400/30";
+                        }
+                    } else {
+                        ensureLocalIdentity();
+                    }
+
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            currentUser = user;
+                            const uidEl = document.getElementById("mp-user-id");
+                            const dotEl = document.getElementById("mp-status-dot");
+                            const modeEl = document.getElementById("mp-conn-mode");
+                            if (uidEl) uidEl.textContent = user.uid;
+                            if (dotEl) dotEl.className = "w-2 h-2 rounded-full bg-lime-400";
+                            if (modeEl) {
+                                modeEl.textContent = "CLOUD ONLINE";
+                                modeEl.className = "mono text-[9px] font-black px-2 py-0.5 rounded bg-lime-500/20 text-lime-300 border border-lime-400/30";
+                            }
+                        }
+                    });
+                } catch (err) {
+                    console.warn("Cloud auth fallback:", err);
+                    ensureLocalIdentity();
+                }
+            })();
+            return mpReadyPromise;
+        }
+
+        function createRemoteCharacterMesh(skinKey, labelText) {
+            const cfg = PLAYER_SKINS[skinKey] || PLAYER_SKINS.ranger;
+            const root = new THREE.Group();
+
+            const bodyMat = new THREE.MeshStandardMaterial({ color: cfg.sleeve, roughness: 0.7 });
+            const vestMat = new THREE.MeshStandardMaterial({ color: cfg.gunAccent, roughness: 0.55 });
+            const headMat = new THREE.MeshStandardMaterial({ color: cfg.glove, roughness: 0.45 });
+            const skinFaceMat = new THREE.MeshStandardMaterial({ color: 0xd6a57c, roughness: 0.65 });
+            const darkGearMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.5 });
+            const visorMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+
+            // Blockpost 2.0 Voxel Soldier Proportions
+            const leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), headMat);
+            leftLeg.position.set(-0.17, 0.47, 0);
+            const rightLeg = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.58, 0.28), headMat);
+            rightLeg.position.set(0.17, 0.47, 0);
+
+            const leftBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), darkGearMat);
+            leftBoot.position.set(-0.17, 0.1, 0.03);
+            const rightBoot = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.35), darkGearMat);
+            rightBoot.position.set(0.17, 0.1, 0.03);
+
+            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.72, 0.38), bodyMat);
+            torso.position.set(0, 1.14, 0);
+            const vest = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.56, 0.44), vestMat);
+            vest.position.set(0, 1.16, 0);
+
+            const pouchL = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), headMat);
+            pouchL.position.set(-0.16, 1.08, 0.24);
+            const pouchR = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.1), headMat);
+            pouchR.position.set(0.16, 1.08, 0.24);
+            const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.54, 0.22), headMat);
+            backpack.position.set(0, 1.18, -0.28);
+
+            const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), bodyMat);
+            leftArm.position.set(-0.48, 1.16, 0.04);
+            const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.64, 0.24), bodyMat);
+            rightArm.position.set(0.48, 1.16, 0.12);
+            rightArm.rotation.x = -0.45;
+
+            const leftShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), vestMat);
+            leftShoulder.position.set(-0.49, 1.38, 0.02);
+            const rightShoulder = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.28), vestMat);
+            rightShoulder.position.set(0.49, 1.38, 0.02);
+
+            const head = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.56, 0.56), skinFaceMat);
+            head.position.set(0, 1.8, 0);
+            const helmetTop = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.28, 0.62), headMat);
+            helmetTop.position.set(0, 1.98, -0.01);
+            const goggleFrame = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.2, 0.1), darkGearMat);
+            goggleFrame.position.set(0, 1.81, 0.27);
+            const visor = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.13, 0.04), visorMat);
+            visor.position.set(0, 1.81, 0.31);
+
+            // Floating Nameplate Sprite
+            const canvas = document.createElement("canvas");
+            canvas.width = 256;
+            canvas.height = 64;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "rgba(15, 23, 42, 0.82)";
+            ctx.fillRect(16, 10, 224, 44);
+            ctx.strokeStyle = "#38bdf8";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(16, 10, 224, 44);
+            ctx.fillStyle = "#f8fafc";
+            ctx.font = "bold 24px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(labelText || "Player", 128, 32);
+
+            const tex = new THREE.CanvasTexture(canvas);
+            const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
+            sprite.position.set(0, 2.5, 0);
+            sprite.scale.set(2.2, 0.55, 1);
+
+            const beacon = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.08, 0.25, 14, 8, 1, true),
+                new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+            );
+            beacon.position.set(0, 7.2, 0);
+
+            root.add(
+                leftLeg, rightLeg, leftBoot, rightBoot,
+                torso, vest, pouchL, pouchR, backpack,
+                leftArm, rightArm, leftShoulder, rightShoulder,
+                head, helmetTop, goggleFrame, visor, sprite, beacon
+            );
+            scene.add(root);
+            return { root, head, torso, leftLeg, rightLeg, skinKey };
+        }
+
+        function clearRemotePlayers() {
+            Object.values(mpRemotePlayers).forEach(rp => {
+                if (rp && rp.mesh && rp.mesh.root) scene.remove(rp.mesh.root);
+            });
+            mpRemotePlayers = {};
+            mpRenderedBuilds.clear();
+            mpProcessedEvents.clear();
+        }
+
+        function upsertRemotePlayer(p) {
+            if (!p || !p.uid || !currentUser || p.uid === currentUser.uid) return;
+            const isNewPeer = !mpRemotePlayers[p.uid];
+            if (isNewPeer || mpRemotePlayers[p.uid].mesh.skinKey !== p.skin) {
+                if (mpRemotePlayers[p.uid]) scene.remove(mpRemotePlayers[p.uid].mesh.root);
+                mpRemotePlayers[p.uid] = {
+                    data: p,
+                    targetPos: new THREE.Vector3(p.x || 0, p.y || 0, p.z || 0),
+                    mesh: createRemoteCharacterMesh(p.skin || "ranger", p.name || "Player")
+                };
+                mpRemotePlayers[p.uid].mesh.root.position.set(p.x || 0, p.y || 0, p.z || 0);
+                if (isNewPeer) {
+                    setMpFeedback(`${p.name || "Player"} joined your party!`, false);
+                    addKillFeedEntry(`${p.name || "Player"} joined the party!`, "text-sky-300");
+                }
+            } else {
+                mpRemotePlayers[p.uid].data = p;
+                mpRemotePlayers[p.uid].targetPos.set(p.x || 0, p.y || 0, p.z || 0);
+            }
+            mpRemotePlayers[p.uid].mesh.root.visible = Boolean(p.alive);
+            refreshPartyUI();
+        }
+
+        function refreshPartyUI() {
+            const listForUi = [];
+            if (currentUser) {
+                listForUi.push({
+                    uid: currentUser.uid,
+                    name: player.name,
+                    skin: selectedSkin,
+                    health: player.health,
+                    inMatch: !inMainLobby
+                });
+            }
+            Object.values(mpRemotePlayers).forEach(rp => {
+                if (rp && rp.data) listForUi.push(rp.data);
+            });
+            renderMpPlayerChips(listForUi);
+            updateHUD();
+        }
+
+        function renderMpPlayerChips(playersArr) {
+            const header = document.getElementById("mp-party-header");
+            const countEl = document.getElementById("mp-party-count");
+            const wrap = document.getElementById("mp-players-list");
+            const liveHud = document.getElementById("hud-party-live");
+            if (!wrap) return;
+            if (!mpActiveRoom) {
+                if (header) {
+                    header.classList.add("hidden");
+                    header.classList.remove("flex");
+                }
+                wrap.classList.add("hidden");
+                wrap.classList.remove("flex");
+                if (liveHud) liveHud.classList.add("hidden");
+                return;
+            }
+            if (header) {
+                header.classList.remove("hidden");
+                header.classList.add("flex");
+            }
+            if (countEl) {
+                const n = playersArr.length;
+                countEl.textContent = `${n} ${n === 1 ? "PLAYER" : "PLAYERS"} IN PARTY`;
+            }
+            wrap.classList.remove("hidden");
+            wrap.classList.add("flex");
+            wrap.innerHTML = playersArr.map(p => {
+                const isMe = currentUser && p.uid === currentUser.uid;
+                const statusTag = p.inMatch ? "IN MATCH" : "IN LOBBY";
+                const skinLabel = (PLAYER_SKINS[p.skin] && PLAYER_SKINS[p.skin].label) ? PLAYER_SKINS[p.skin].label : "Ranger";
+                return `<span class="px-2.5 py-1 rounded-xl font-bold flex items-center gap-1.5 ${isMe ? "bg-lime-500/20 text-lime-300 border border-lime-400/40" : "bg-sky-500/20 text-sky-300 border border-sky-400/40"}">
+                    <span class="w-2 h-2 rounded-full ${p.inMatch ? "bg-amber-400" : "bg-lime-400"}"></span>
+                    <span>${p.name}${isMe ? " (You)" : ""}</span>
+                    <span class="text-[9px] uppercase opacity-75">• ${skinLabel} • ${statusTag}</span>
+                </span>`;
+            }).join("");
+
+            if (liveHud) {
+                liveHud.classList.remove("hidden");
+                const names = playersArr.map(p => `${p.name}${currentUser && p.uid === currentUser.uid ? " (You)" : ""}`).join(" • ");
+                liveHud.textContent = `PARTY (${playersArr.length}): ${names}`;
+            }
+        }
+
+        function subscribeToRoom(roomCode) {
+            if (!db || !currentUser) return;
+            if (mpUnsubRoom) mpUnsubRoom();
+            if (mpUnsubPlayers) mpUnsubPlayers();
+            if (mpUnsubEvents) mpUnsubEvents();
+            if (mpUnsubBuilds) mpUnsubBuilds();
+
+            const roomDocRef = doc(db, "artifacts", appId, "public", "data", "deadshot_rooms", roomCode);
+            const playersColRef = collection(db, "artifacts", appId, "public", "data", `deadshot_players_${roomCode}`);
+            const eventsColRef = collection(db, "artifacts", appId, "public", "data", `deadshot_events_${roomCode}`);
+            const buildsColRef = collection(db, "artifacts", appId, "public", "data", `deadshot_builds_${roomCode}`);
+
+            mpUnsubRoom = onSnapshot(roomDocRef, (snap) => {
+                if (!snap.exists()) return;
+                const data = snap.data();
+                if (!isRoomHost) {
+                    if (data.map && data.map !== selectedMap) setLobbyMap(data.map);
+                    if (data.gameMode && data.gameMode !== gameMode) setLobbyGameMode(data.gameMode);
+                    if (typeof data.buildEnabled === "boolean" && data.buildEnabled !== buildEnabled) setLobbyBuildMode(data.buildEnabled);
+                    if (data.difficulty && data.difficulty !== lobbyDifficulty) setLobbyDifficulty(data.difficulty);
+
+                    if (data.matchNonce && data.matchNonce > lastKnownMatchNonce) {
+                        lastKnownMatchNonce = data.matchNonce;
+                        if (inMainLobby) {
+                            const nameInput = document.getElementById("lobby-player-name");
+                            player.name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Survivor-01";
+                            inMainLobby = false;
+                            const lobbyEl = document.getElementById("main-lobby-overlay");
+                            if (lobbyEl) {
+                                lobbyEl.classList.add("hidden");
+                                lobbyEl.classList.remove("flex");
+                            }
+                            resetSoloMatch();
+                            engageLookControl();
+                        }
+                    }
+                }
+            }, (err) => console.warn("Room snapshot error:", err));
+
+            mpUnsubPlayers = onSnapshot(playersColRef, (snap) => {
+                if (!currentUser) return;
+                const activeUids = new Set();
+
+                snap.forEach((docSnap) => {
+                    const p = docSnap.data();
+                    if (!p || !p.uid) return;
+                    activeUids.add(p.uid);
+                    if (p.uid === currentUser.uid) return;
+                    upsertRemotePlayer(p);
+                });
+
+                Object.keys(mpRemotePlayers).forEach((uid) => {
+                    if (!activeUids.has(uid)) {
+                        scene.remove(mpRemotePlayers[uid].mesh.root);
+                        delete mpRemotePlayers[uid];
+                    }
+                });
+
+                refreshPartyUI();
+            }, (err) => console.warn("Players snapshot error:", err));
+
+            mpUnsubEvents = onSnapshot(eventsColRef, (snap) => {
+                if (!currentUser) return;
+                snap.forEach((docSnap) => {
+                    if (mpProcessedEvents.has(docSnap.id)) return;
+                    mpProcessedEvents.add(docSnap.id);
+                    const ev = docSnap.data();
+                    if (!ev || ev.createdAt < Date.now() - 12000) return;
+
+                    if (ev.targetUid === currentUser.uid && ev.type === "hit" && player.alive) {
+                        applyDamageToPlayer(ev.damage || 15, ev.attackerName || "Online Player");
+                        if (!player.alive && window.mpSendKillConfirm) {
+                            window.mpSendKillConfirm(ev.attackerUid, ev.attackerName);
+                        }
+                    } else if (ev.type === "elim") {
+                        if (ev.attackerUid === currentUser.uid) {
+                            player.kills += 1;
+                            updateHUD();
+                        }
+                        addKillFeedEntry(`${ev.attackerName} eliminated ${ev.victimName}`, "text-sky-300");
+                        checkMatchVictory();
+                    }
+                });
+            }, (err) => console.warn("Events snapshot error:", err));
+
+            mpUnsubBuilds = onSnapshot(buildsColRef, (snap) => {
+                if (!currentUser) return;
+                snap.forEach((docSnap) => {
+                    if (mpRenderedBuilds.has(docSnap.id)) return;
+                    mpRenderedBuilds.add(docSnap.id);
+                    const b = docSnap.data();
+                    if (!b || b.ownerUid === currentUser.uid) return;
+                    spawnRemoteBuildMesh(b);
+                });
+            }, (err) => console.warn("Builds snapshot error:", err));
+        }
+
+        window.createMultiplayerRoom = async function () {
+            setMpFeedback("Creating room...", false);
+            if (mpReadyPromise) await mpReadyPromise;
+            const user = ensureLocalIdentity();
+
+            const code = Math.random().toString(36).substring(2, 6).toUpperCase();
+            isRoomHost = true;
+            mpActiveRoom = code;
+            clearRemotePlayers();
+
+            const nameInput = document.getElementById("lobby-player-name");
+            player.name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Survivor-01";
+
+            if (db && !user.isOfflineFallback) {
+                try {
+                    const roomDocRef = doc(db, "artifacts", appId, "public", "data", "deadshot_rooms", code);
+                    await setDoc(roomDocRef, {
+                        code,
+                        hostUid: user.uid,
+                        map: selectedMap,
+                        gameMode,
+                        buildEnabled,
+                        difficulty: lobbyDifficulty,
+                        matchNonce: 0,
+                        updatedAt: Date.now()
+                    });
+                    subscribeToRoom(code);
+                } catch (err) {
+                    console.warn("Cloud room create fallback:", err);
+                }
+            }
+
+            if (mpHeartbeatTimer) clearInterval(mpHeartbeatTimer);
+            mpHeartbeatTimer = setInterval(() => {
+                if (mpActiveRoom && window.mpSyncLocalState) window.mpSyncLocalState();
+            }, 600);
+
+            document.getElementById("mp-room-badge").textContent = `HOSTING ROOM: ${code}`;
+            document.getElementById("mp-room-badge").className = "mono text-[10px] font-black px-2 py-0.5 rounded bg-sky-400 text-stone-950";
+            document.getElementById("mp-room-input").value = code;
+            document.getElementById("mp-leave-btn").classList.remove("hidden");
+            setMpFeedback(`Room ${code} active! Share code "${code}" with your friend to join.`, false);
+
+            refreshPartyUI();
+            await window.mpSyncLocalState();
+        };
+
+        window.joinMultiplayerRoom = async function () {
+            const raw = document.getElementById("mp-room-input").value.trim().toUpperCase();
+            if (!raw) {
+                setMpFeedback("Enter a 4-letter room code first.", true);
+                return;
+            }
+
+            setMpFeedback(`Joining room ${raw}...`, false);
+            if (mpReadyPromise) await mpReadyPromise;
+            const user = ensureLocalIdentity();
+
+            let roomData = null;
+            if (db && !user.isOfflineFallback) {
+                try {
+                    const roomDocRef = doc(db, "artifacts", appId, "public", "data", "deadshot_rooms", raw);
+                    const snap = await getDoc(roomDocRef);
+                    if (snap.exists()) {
+                        roomData = snap.data();
+                    } else if (!mpChannel) {
+                        setMpFeedback(`Room "${raw}" not found.`, true);
+                        return;
+                    }
+                } catch (err) {
+                    console.warn("Cloud room lookup fallback:", err);
+                }
+            }
+
+            isRoomHost = false;
+            mpActiveRoom = raw;
+            clearRemotePlayers();
+
+            if (roomData) {
+                if (roomData.map) setLobbyMap(roomData.map);
+                if (roomData.gameMode) setLobbyGameMode(roomData.gameMode);
+                if (typeof roomData.buildEnabled === "boolean") setLobbyBuildMode(roomData.buildEnabled);
+                if (roomData.difficulty) setLobbyDifficulty(roomData.difficulty);
+            }
+
+            const nameInput = document.getElementById("lobby-player-name");
+            player.name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Survivor-01";
+
+            document.getElementById("mp-room-badge").textContent = `JOINED ROOM: ${raw}`;
+            document.getElementById("mp-room-badge").className = "mono text-[10px] font-black px-2 py-0.5 rounded bg-emerald-400 text-stone-950";
+            document.getElementById("mp-leave-btn").classList.remove("hidden");
+            setMpFeedback(`Connected to party room ${raw}!`, false);
+
+            if (db && !user.isOfflineFallback) {
+                subscribeToRoom(raw);
+            }
+
+            if (mpHeartbeatTimer) clearInterval(mpHeartbeatTimer);
+            mpHeartbeatTimer = setInterval(() => {
+                if (mpActiveRoom && window.mpSyncLocalState) window.mpSyncLocalState();
+            }, 600);
+
+            refreshPartyUI();
+            await window.mpSyncLocalState();
+
+            if (roomData && roomData.matchNonce && roomData.matchNonce > 0 && inMainLobby) {
+                lastKnownMatchNonce = roomData.matchNonce;
+                inMainLobby = false;
+                const lobbyEl = document.getElementById("main-lobby-overlay");
+                if (lobbyEl) {
+                    lobbyEl.classList.add("hidden");
+                    lobbyEl.classList.remove("flex");
+                }
+                resetSoloMatch();
+                engageLookControl();
+            }
+        };
+
+        window.leaveMultiplayerRoom = async function () {
+            if (mpHeartbeatTimer) clearInterval(mpHeartbeatTimer);
+            if (mpUnsubRoom) mpUnsubRoom();
+            if (mpUnsubPlayers) mpUnsubPlayers();
+            if (mpUnsubEvents) mpUnsubEvents();
+            if (mpUnsubBuilds) mpUnsubBuilds();
+
+            if (mpChannel && mpActiveRoom && currentUser) {
+                mpChannel.postMessage({ type: "player_leave", roomCode: mpActiveRoom, senderUid: currentUser.uid });
+            }
+
+            if (db && currentUser && !currentUser.isOfflineFallback && mpActiveRoom) {
+                try {
+                    const myDoc = doc(db, "artifacts", appId, "public", "data", `deadshot_players_${mpActiveRoom}`, currentUser.uid);
+                    await deleteDoc(myDoc);
+                } catch (e) {}
+            }
+
+            mpActiveRoom = null;
+            isRoomHost = false;
+            clearRemotePlayers();
+            renderMpPlayerChips([]);
+            setMpFeedback("", false);
+
+            document.getElementById("mp-room-badge").textContent = "SOLO / OFFLINE";
+            document.getElementById("mp-room-badge").className = "mono text-[10px] font-black px-2 py-0.5 rounded bg-stone-800 text-stone-300";
+            document.getElementById("mp-leave-btn").classList.add("hidden");
+            updateHUD();
+        };
+
+        window.mpHostStartMatch = async function () {
+            if (!currentUser || !mpActiveRoom || !isRoomHost) return;
+            if (mpChannel) {
+                mpChannel.postMessage({
+                    type: "room_start",
+                    roomCode: mpActiveRoom,
+                    senderUid: currentUser.uid,
+                    map: selectedMap,
+                    gameMode,
+                    buildEnabled,
+                    difficulty: lobbyDifficulty
+                });
+            }
+            if (!db || currentUser.isOfflineFallback) return;
+            try {
+                const roomDocRef = doc(db, "artifacts", appId, "public", "data", "deadshot_rooms", mpActiveRoom);
+                await updateDoc(roomDocRef, {
+                    map: selectedMap,
+                    gameMode,
+                    buildEnabled,
+                    difficulty: lobbyDifficulty,
+                    matchNonce: Date.now(),
+                    updatedAt: Date.now()
+                });
+            } catch (e) {}
+        };
+
+        window.mpGetSpawnCoordinates = function () {
+            const x = isRoomHost ? -5.5 : 5.5;
+            const z = 0;
+            const yaw = isRoomHost ? -Math.PI / 2 : Math.PI / 2;
+            return { x, z, yaw };
+        };
+
+        window.mpSyncLocalState = async function () {
+            if (!currentUser || !mpActiveRoom) return;
+            const payload = {
+                uid: currentUser.uid,
+                name: player.name,
+                skin: selectedSkin,
+                x: Number(player.pos.x.toFixed(2)),
+                y: Number(player.pos.y.toFixed(2)),
+                z: Number(player.pos.z.toFixed(2)),
+                yaw: Number(player.yaw.toFixed(3)),
+                health: player.health,
+                alive: player.alive,
+                inMatch: !inMainLobby,
+                kills: player.kills,
+                updatedAt: Date.now()
+            };
+
+            if (mpChannel) {
+                mpChannel.postMessage({
+                    type: "player_state",
+                    roomCode: mpActiveRoom,
+                    senderUid: currentUser.uid,
+                    player: payload
+                });
+            }
+
+            if (!db || currentUser.isOfflineFallback) return;
+            try {
+                const myDoc = doc(db, "artifacts", appId, "public", "data", `deadshot_players_${mpActiveRoom}`, currentUser.uid);
+                await setDoc(myDoc, payload);
+            } catch (e) {}
+        };
+
+        window.mpSendHitEvent = async function (targetUid, targetName, damage, isHead) {
+            if (!currentUser || !mpActiveRoom) return;
+            if (mpChannel) {
+                mpChannel.postMessage({
+                    type: "hit",
+                    roomCode: mpActiveRoom,
+                    senderUid: currentUser.uid,
+                    attackerUid: currentUser.uid,
+                    attackerName: player.name,
+                    targetUid,
+                    targetName,
+                    damage,
+                    isHead
+                });
+            }
+            if (!db || currentUser.isOfflineFallback) return;
+            try {
+                const eventsCol = collection(db, "artifacts", appId, "public", "data", `deadshot_events_${mpActiveRoom}`);
+                await addDoc(eventsCol, {
+                    type: "hit",
+                    attackerUid: currentUser.uid,
+                    attackerName: player.name,
+                    targetUid,
+                    targetName,
+                    damage,
+                    isHead,
+                    createdAt: Date.now()
+                });
+            } catch (e) {}
+        };
+
+        window.mpSendKillConfirm = async function (attackerUid, attackerName) {
+            if (!currentUser || !mpActiveRoom) return;
+            if (mpChannel) {
+                mpChannel.postMessage({
+                    type: "elim",
+                    roomCode: mpActiveRoom,
+                    senderUid: currentUser.uid,
+                    attackerUid,
+                    attackerName: attackerName || "Online Player",
+                    victimUid: currentUser.uid,
+                    victimName: player.name
+                });
+            }
+            if (!db || currentUser.isOfflineFallback) return;
+            try {
+                const eventsCol = collection(db, "artifacts", appId, "public", "data", `deadshot_events_${mpActiveRoom}`);
+                await addDoc(eventsCol, {
+                    type: "elim",
+                    attackerUid,
+                    attackerName: attackerName || "Online Player",
+                    victimUid: currentUser.uid,
+                    victimName: player.name,
+                    createdAt: Date.now()
+                });
+            } catch (e) {}
+        };
+
+        window.mpPublishBuild = async function (pieceData) {
+            if (!currentUser || !mpActiveRoom) return;
+            if (mpChannel) {
+                mpChannel.postMessage({
+                    type: "build_piece",
+                    roomCode: mpActiveRoom,
+                    senderUid: currentUser.uid,
+                    piece: pieceData
+                });
+            }
+            if (!db || currentUser.isOfflineFallback) return;
+            try {
+                const buildsCol = collection(db, "artifacts", appId, "public", "data", `deadshot_builds_${mpActiveRoom}`);
+                await addDoc(buildsCol, {
+                    ownerUid: currentUser.uid,
+                    ...pieceData,
+                    createdAt: Date.now()
+                });
+            } catch (e) {}
+        };
+
+        window.updateRemotePlayersVisuals = function (dt) {
+            Object.values(mpRemotePlayers).forEach((rp) => {
+                if (!rp || !rp.mesh || !rp.data) return;
+                if (rp.mesh.root.position.distanceTo(rp.targetPos) > 25) {
+                    rp.mesh.root.position.copy(rp.targetPos);
+                } else {
+                    rp.mesh.root.position.lerp(rp.targetPos, Math.min(1, dt * 16));
+                }
+                rp.mesh.root.rotation.y = (rp.data.yaw || 0) + Math.PI;
+            });
+        };
+
+        initMultiplayerService();
     </script>
 </body>
 </html>
